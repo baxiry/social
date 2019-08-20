@@ -1,4 +1,4 @@
-this example need installing mgo pachage
+this example need installing mgo package
 
 go get gopkg.in/mgo.v2
 

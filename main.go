@@ -2,45 +2,12 @@ package main
 
 import (
 	"fmt"
+    "net/http"
 	"html/template"
 	"os"
-	// "gopkg.in/mgo.v2"
-    "github.com/gin-gonic/gin"
+
+	"gopkg.in/mgo.v2"
 )
-
-func getData(c *gin.Context) {
-		title := c.PostForm("title")
-		articl := c.PostForm("articl")
-
-        fmt.Printf("title is : %s,  articl is : %s", title, articl)
-	}
-    c.JSON(200, gin.H{title: articl})
-}
-
-func postData(c *gin.Context) {
-    c.JSON(200, gin.H{"postmsg": "posted hello world"})
-}
-
-
-func main() {
-    r := gin.Default()
-    r.GET("/", getData)
-    r.POST("/", postData)
-    r.Run()
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 type Book struct {
 	Name    string
@@ -78,6 +45,7 @@ func main() {
 		tmpl.Execute(w, struct{ Ok bool }{true})
 	})
 
+    fmt.Println("server runing on localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
 

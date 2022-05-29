@@ -1,0 +1,33 @@
+{{ template "header.html" . }}
+<body>
+
+<div class=container>
+<div>
+<a href="/cars">cars</a>
+<a href="/animals">animals</a>
+<a href="/mobiles">mobile</a>
+<a href="/motors">motors</a>
+<a href="/computers">computers</a>
+<a href="/services">services</a>
+<a href="/authers">authers</a>
+</div>
+<div class="container">
+        <div class="m-5">
+        <h3>{{.product.Title}}</h3>
+        <p><b>Details:</b> {{.product.Description}} </p>
+        <p><b>Price:</b>   {{.product.Price}}</p>
+
+    {{ range .product.Photos }}
+        {{if .}}
+        <img src="/fs/{{.}}" style="width:100%">
+        {{else}} 
+        <h3>no photo</h3>
+        {{end}}
+    {{end}}
+    </div>
+</div>
+<br>
+
+    </div>
+</body>
+</html>

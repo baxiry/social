@@ -1,0 +1,31 @@
+{{template "header.html" .}}    
+<body>
+  <div class="center"><h1>Sign up</h1></div>
+  
+    <form method=post >
+       <input name=username type="text" placeholder="username" pattern=".{4,10}" required title="4 to 30 characters" required><br><br>
+       <input name=password type="password" placeholder="password" pattern=".{6,}" required title="6 characters minimum" required><br><br>
+       <input name=email type="text" pattern=".{14,}" placeholder="email" required><br><br>
+       <input name=phon type="text" pattern=".{10,12}" placeholder="nember phon" required><br><br>
+       <input type="submit" title="resgister in this site" value=submitd class=btn>
+    <form>
+</body>
+
+<style>
+form {
+    position:center;
+    height: 20em;
+    position: relative; 
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+#submi {
+    width: relative;
+}
+</style>
+</html>

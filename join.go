@@ -191,16 +191,21 @@ func mysess(c echo.Context, name string, userid int) {
 func login(c echo.Context) error {
 	femail := c.FormValue("email")
 	fpass := c.FormValue("password")
-	userid, name, email, pass := getUsername(femail)
+	userid, username, email, pass := getUsername(femail)
 
 	if pass == fpass && femail == email {
 		//userSession[email] = name
-		mysess(c, name, userid)
+		mysess(c, username, userid)
 		return c.Redirect(http.StatusSeeOther, "/") // 303 code
 		// TODO redirect to latest page
 	}
 	// TODO flush this message
-	return c.Render(200, "login.html", "Username or password is wrong")
+	data := make(map[string]interface{})
+	data["username"] = username
+	data["userid"] = userid
+	data["flush"] = "Username or password is wrong"
+	fmt.Println(c.Render(200, "login.html", data))
+	return nil
 }
 
 func signup(c echo.Context) error {

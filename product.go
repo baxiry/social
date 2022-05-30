@@ -27,8 +27,9 @@ func updateProdPage(c echo.Context) error {
 	// TODO whish is beter all data of product or jast photo ?
 	data := make(map[string]interface{})
 	sess, _ := session.Get("session", c)
-	data["username"] = sess.Values["name"]
+	data["username"] = sess.Values["username"]
 	data["userid"] = sess.Values["userid"]
+
 	// User ID from path `users/:id`
 	pid := c.Param("id") // TODO home or catigory.html ?
 	productId, _ := strconv.Atoi(pid)
@@ -44,20 +45,18 @@ func updateProdPage(c echo.Context) error {
 
 // upload photos
 func createProductPage(c echo.Context) error {
-	data := make(map[string]interface{}, 3)
-	sess, err := session.Get("session", c)
-	if err != nil {
-		fmt.Println("erro upload session is : ", err)
-	}
+	// check session first
+	sess, _ := session.Get("session", c)
 	userid := sess.Values["userid"]
-	username := sess.Values["name"]
-	data["username"] = username
-	data["userid"] = userid
 	if userid == nil {
 		// TODO flash here
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
-	// c.Response().Status
+
+	data := make(map[string]interface{}, 3)
+	username := sess.Values["username"]
+	data["username"] = username
+	data["userid"] = userid
 	return c.Render(200, "upload.html", data)
 }
 
@@ -109,17 +108,17 @@ func updateProduct(title, catig, descr, price, photos string, productId int) err
 	defer stmt.Close()
 
 	// execute
-	stmt.Exec(title, catig, descr, price, photos, productId)
+	_, err = stmt.Exec(title, catig, descr, price, photos, productId)
+
+	if err != nil {
+		return err
+	}
 	/*
+		a, err := res.RowsAffected()
 		if err != nil {
+			fmt.Println("error is: ", err)
 			return err
 		}
-
-			a, err := res.RowsAffected()
-			if err != nil {
-				fmt.Println("error is: ", err)
-				return err
-			}
 	*/
 	return nil
 }
@@ -144,17 +143,20 @@ func createProduct(c echo.Context) error {
 	// TODO: how upload this ?.  definde uploader by session
 	sess, _ := session.Get("session", c)
 	ownerid := sess.Values["userid"]
+	if ownerid == nil {
+		return err
+	}
 	// TODO mybe we need handle when session expired befoar appload
 
 	title := c.FormValue("title")
 	catigory := c.FormValue("catigory")
 	details := c.FormValue("description")
 	//price, e := strconv.Atoi(c.FormValue("price"))
-	price, e := strconv.ParseFloat(c.FormValue("price"), 32)
-	if e != nil {
-		fmt.Println("error at ParseFloat", e)
+	price, err := strconv.ParseFloat(c.FormValue("price"), 32)
+	if err != nil {
+		fmt.Println("error at ParseFloat", err)
+		return err
 	}
-	fmt.Printf("Type of price is : %T\n", price)
 
 	// Read files, Multipart form
 	form, err := c.MultipartForm()
@@ -221,7 +223,6 @@ func deleteProd(c echo.Context) error {
 	}
 
 	id := c.Param("id")
-	fmt.Println("id is ", id)
 	i, _ := strconv.Atoi(id)
 	err = deleteProducte(i)
 	if err != nil {
@@ -261,22 +262,23 @@ func updateProd(c echo.Context) error {
 // TODO redirect to latest page after login.
 func getOneProd(c echo.Context) error {
 
+	sess, _ := session.Get("session", c)
+	userid := sess.Values["userid"]
+	username := sess.Values["username"]
+
 	data := make(map[string]interface{})
 
-	sess, _ := session.Get("session", c)
-	name := sess.Values["name"]
-	userid := sess.Values["userid"]
-
-	// User ID from path `users/:id`
 	id := c.Param("id") // TODO home or catigory.html ?
 	productId, _ := strconv.Atoi(id)
 
-	data["username"] = name
-	data["userid"] = userid
 	data["product"], err = selectProduct(productId)
 
 	if err != nil {
 		fmt.Println("with gitCatigories: ", err)
 	}
+	data["userid"] = userid
+	data["username"] = username
+
+	// User ID from path `users/:id`
 	return c.Render(http.StatusOK, "product.html", data)
 }

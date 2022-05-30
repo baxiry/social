@@ -63,28 +63,23 @@ func myProducts(ownerid int) []Product {
 
 // perhaps is beter ignoring this feater ??!
 func myStores(c echo.Context) error { // TODO rename to myproduct ??
-	fmt.Println("at myStores function ")
-	sess, _ := session.Get("session", c)
-	name := sess.Values["name"]
 
-	if name == nil {
+	sess, _ := session.Get("session", c)
+	username := sess.Values["username"]
+
+	if username == nil {
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 
 	data := make(map[string]interface{}, 3)
 	userid := sess.Values["userid"]
-	data["username"] = name // from session or from memcach ?
-	data["userid"] = userid // from session or from memcach ?
+
+	data["username"] = username
+	data["userid"] = userid
 
 	data["products"] = myProducts(userid.(int))
-	if err != nil {
-		fmt.Println("err in product", err)
-	}
 
-	err := c.Render(200, "mystore.html", data)
-	if err != nil {
-		fmt.Println("error in mystore is : ", err)
-	}
+	fmt.Println(c.Render(200, "mystore.html", data))
 	return nil
 }
 
@@ -119,12 +114,12 @@ func getProds(c echo.Context) error {
 // perhaps is beter ignoring this feater ??!
 func stores(c echo.Context) error {
 	sess, _ := session.Get("session", c)
-	uid := sess.Values["userid"]
+	userid := sess.Values["userid"]
 	data := make(map[string]interface{}, 2)
-	name := sess.Values["name"]
+	username := sess.Values["username"]
 
-	data["username"] = name // from session or from memcach ?
-	data["userid"] = uid
+	data["username"] = username
+	data["userid"] = userid
 	return c.Render(200, "stores.html", data)
 }
 

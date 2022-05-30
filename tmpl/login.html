@@ -4,15 +4,6 @@
 <div class="container">
   <!-- Content here -->
 
-
-
-<form method=post >
-    <h2>login page</h2>
-    <input name=email type=text placeholder=email pattern=".{6,40}" required><br><br>
-    <input name=password type=password placeholder=password required><br><br>
-    <input type=submit value=submit >
-    <!--  <button type="submit" disabled={!name || !text || text.length < 20 || submitting}>  -->
-    <h4>{{.}}</h4>
 </form>
 <form method=post>
   <div class="mb-3">
@@ -26,11 +17,14 @@
   </div>
   
   <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
     <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>
   
-  <button type="submit" value=submit class="btn btn-primary">Submit</button>
+  <button type="submit" value=submit class="btn btn-primary" >Submit</button>
+
+   <!--  <button type="submit" disabled={!name || !text || text.length < 20 || submitting}>  -->
+    <h4>{{.}}</h4>
 </form>
 
 </div>

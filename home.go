@@ -16,7 +16,7 @@ import (
 func homePage(c echo.Context) error {
 
 	sess, _ := session.Get("session", c)
-	username := sess.Values["name"]
+	username := sess.Values["username"]
 	uid := sess.Values["userid"]
 	//fmt.Println("name is : ", name)
 

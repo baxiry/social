@@ -51,8 +51,8 @@ func assets() string {
 		fmt.Println(err)
 	}
 
-	if home != "/Users/fedora/repo/store" {
-		return "/root/store/assets"
+	if home != "/Users/fedora/repo/social" {
+		return "/root/social/assets"
 	}
 	return "assets"
 }

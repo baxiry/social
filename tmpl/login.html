@@ -1,27 +1,36 @@
-{{template "header.html" .}}
+{{template "header.html"}}
 <body>
 
 <div class="container">
   <!-- Content here -->
 
-  <div class="center"><h1>Login</h1></div>
+
+
+<form method=post >
+    <h2>login page</h2>
+    <input name=email type=text placeholder=email pattern=".{6,40}" required><br><br>
+    <input name=password type=password placeholder=password required><br><br>
+    <input type=submit value=submit >
+    <!--  <button type="submit" disabled={!name || !text || text.length < 20 || submitting}>  -->
+    <h4>{{.}}</h4>
+</form>
 <form method=post>
   <div class="mb-3">
-    <input name=email type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  pattern=".{6,40}" placeholder="email" required>
+    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <input name=email type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
   </div>
   <div class="mb-3">
-    <input name=password type="password" class="form-control" id="exampleInputPassword1"  placeholder="password" required>
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input name=password type="password" class="form-control" id="exampleInputPassword1">
   </div>
   
   <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
     <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>
   
   <button type="submit" value=submit class="btn btn-primary">Submit</button>
-      
-    <h4>{{.flush}}</h4>
-
 </form>
 
 </div>

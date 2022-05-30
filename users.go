@@ -11,29 +11,11 @@ import (
 )
 
 func signPage(c echo.Context) error {
-	data := make(map[string]interface{}, 1)
-	sess, _ := session.Get("session", c)
-
-	userid := sess.Values["userid"]
-	name := sess.Values["name"]
-
-	data["username"] = name
-	data["userid"] = userid
-	fmt.Println("data is", data)
-	return c.Render(200, "sign.html", data)
+	return c.Render(200, "sign.html", "hello")
 }
 
 func loginPage(c echo.Context) error {
-	data := make(map[string]interface{}, 1)
-	sess, _ := session.Get("session", c)
-
-	userid := sess.Values["userid"]
-	name := sess.Values["name"]
-
-	data["username"] = name
-	data["userid"] = userid
-
-	return c.Render(200, "login.html", data)
+	return c.Render(200, "login.html", "hello")
 }
 
 // db
@@ -127,7 +109,7 @@ func updateAcountInfo(c echo.Context) error {
 	// redirect to acoun page
 	userid := strconv.Itoa(uid.(int))
 
-	return c.Render(303, "/acount/"+userid, nil)
+	return c.Redirect(303, "/acount/"+userid)
 }
 
 // updateAcount updates Acount information
@@ -191,21 +173,16 @@ func mysess(c echo.Context, name string, userid int) {
 func login(c echo.Context) error {
 	femail := c.FormValue("email")
 	fpass := c.FormValue("password")
-	userid, username, email, pass := getUsername(femail)
+	userid, name, email, pass := getUsername(femail)
 
 	if pass == fpass && femail == email {
 		//userSession[email] = name
-		mysess(c, username, userid)
+		mysess(c, name, userid)
 		return c.Redirect(http.StatusSeeOther, "/") // 303 code
 		// TODO redirect to latest page
 	}
 	// TODO flush this message
-	data := make(map[string]interface{})
-	data["username"] = username
-	data["userid"] = userid
-	data["flush"] = "Username or password is wrong"
-	fmt.Println(c.Render(200, "login.html", data))
-	return nil
+	return c.Render(200, "login.html", "Username or password is wrong")
 }
 
 func signup(c echo.Context) error {

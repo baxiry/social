@@ -16,14 +16,13 @@ func login(c echo.Context) error {
 
 	if pass == fpass && femail == email {
 		//userSession[email] = name
-		mysess(c, name, userid)
+		NewSession(c, name, userid)
 		return c.Redirect(http.StatusSeeOther, "/") // 303 code
 		// TODO redirect to latest page
 	}
 	// TODO flush this message
-	fmt.Println(c.Render(200, "login.html", "username or pass is wrong"))
+	fmt.Println(c.Render(200, "login.html", "username or pass is wrong!"))
 	return nil
-
 }
 
 // signup sing up new user handler
@@ -64,7 +63,7 @@ func insertUser(user, pass, email, phon string) error {
 	return nil
 }
 
-// get all username
+// get user info
 func getUsername(femail string) (int, string, string, string) {
 	var name, email, password string
 	var userid int
@@ -77,14 +76,8 @@ func getUsername(femail string) (int, string, string, string) {
 	return userid, name, email, password
 }
 
-//
-//func getUser(c echo.Context) error {
-// User ID from path `users/:id`
-//id := c.Param("id")
-//return c.Render(http.StatusOK, "user.html", id)
-//}
-
-func mysess(c echo.Context, username string, userid int) {
+// newSession creates new session
+func NewSession(c echo.Context, username string, userid int) {
 	sess, _ := session.Get("session", c)
 	sess.Options = &sessions.Options{
 		Path:     "/",

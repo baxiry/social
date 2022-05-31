@@ -67,7 +67,7 @@ func updateAcountInfo(c echo.Context) error {
 	}
 
 	// update session information
-	mysess(c, name, uid.(int))
+	NewSession(c, name, uid.(int))
 
 	// redirect to acoun page
 	userid := strconv.Itoa(uid.(int))
@@ -81,18 +81,18 @@ func updateAcount(c echo.Context) error {
 	sess, _ := session.Get("session", c)
 
 	uid := sess.Values["userid"]
-	name := sess.Values["name"]
+	username := sess.Values["username"]
 
-	data["name"] = name
+	data["username"] = username
 
 	if uid == nil {
 		// login first
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 
-	data["name"], data["email"], data["phon"], data["linkavatar"] = getUserInfo(uid.(int))
+	data["username"], data["email"], data["phon"], data["linkavatar"] = getUserInfo(uid.(int))
 
-	data["id"] = uid
+	data["userid"] = uid
 
 	fmt.Println(data)
 
@@ -103,7 +103,8 @@ func updateAcount(c echo.Context) error {
 func acount(c echo.Context) error {
 	sess, _ := session.Get("session", c)
 	data := make(map[string]interface{}, 2)
-	data["name"] = sess.Values["name"]
+	data["username"] = sess.Values["username"]
+	fmt.Println("username is ", data["username"])
 	data["userid"] = sess.Values["userid"]
 	fmt.Println("user id or user is : ", data["userid"])
 	// TODO get all info like foto from db

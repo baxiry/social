@@ -36,10 +36,7 @@ func updateProdPage(c echo.Context) error {
 
 	data["product"], err = selectProduct(productId)
 
-	err = c.Render(http.StatusOK, "updateProd.html", data)
-	if err != nil {
-		fmt.Println(err)
-	}
+	fmt.Println(c.Render(http.StatusOK, "updateProd.html", data))
 	return nil
 }
 
@@ -81,18 +78,10 @@ func selectProduct(productId int) (Product, error) {
 
 // delete Producte from db.
 func deleteProducte(productId int) error {
-	res, err := db.Exec("DELETE FROM stores.products WHERE productId=?", productId)
+	_, err := db.Exec("DELETE FROM stores.products WHERE productId=?", productId)
 	if err != nil {
 		return err
 	}
-
-	affectedRows, err := res.RowsAffected()
-
-	if err != nil {
-		return err
-	}
-	fmt.Println("affectedRows: ", affectedRows)
-	// defer res // TODO I need understand this close in mariadb
 	return nil
 }
 
@@ -113,13 +102,6 @@ func updateProduct(title, catig, descr, price, photos string, productId int) err
 	if err != nil {
 		return err
 	}
-	/*
-		a, err := res.RowsAffected()
-		if err != nil {
-			fmt.Println("error is: ", err)
-			return err
-		}
-	*/
 	return nil
 }
 
@@ -132,9 +114,7 @@ func insertProduct(title, catigory, details, picts string, ownerid int, price fl
 	if err != nil {
 		return err
 	}
-	// be careful deferring Queries if you are using transactions
-	defer insert.Close() // TODO why we need closeing this connection ?
-
+	defer insert.Close()
 	return nil
 }
 
@@ -173,7 +153,6 @@ func createProduct(c echo.Context) error {
 		// TODO Rename pictures.
 	}
 
-	//  func insertProduct(title, catigory, details, picts string, ownerid, int64, price float32) error {
 	err = insertProduct(title, catigory, details, picts, ownerid.(int), price)
 
 	if err != nil {
@@ -185,7 +164,6 @@ func createProduct(c echo.Context) error {
 		src, err := file.Open()
 		if err != nil {
 			fmt.Println("error at file.Open() file is :", err)
-
 			return err
 		}
 		defer src.Close()
@@ -259,25 +237,19 @@ func updateProd(c echo.Context) error {
 	return nil
 }
 
-// TODO redirect to latest page after login.
+// getOneProd render spicific product info
 func getOneProd(c echo.Context) error {
-
-	sess, _ := session.Get("session", c)
-	userid := sess.Values["userid"]
-	username := sess.Values["username"]
+	// TODO make userinterface know sesstin from broser.
 
 	data := make(map[string]interface{})
 
-	id := c.Param("id") // TODO home or catigory.html ?
+	id := c.Param("id")
 	productId, _ := strconv.Atoi(id)
 
 	data["product"], err = selectProduct(productId)
-
 	if err != nil {
 		fmt.Println("with gitCatigories: ", err)
 	}
-	data["userid"] = userid
-	data["username"] = username
 
 	// User ID from path `users/:id`
 	return c.Render(http.StatusOK, "product.html", data)

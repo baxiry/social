@@ -18,15 +18,15 @@ func getProductes(catigory string) ([]Product, error) {
 	res, err := db.Query(
 		"SELECT productId, title, photos, price FROM stores.products WHERE catigory = ?", catigory)
 	if err != nil {
+		fmt.Println("error in getProducts func", err)
 		return nil, err
 	}
-	defer res.Close() // TODO I need understand this close in mariadb
+	defer res.Close() // free result row
 
 	items := make([]Product, 0)
 	for res.Next() {
 		res.Scan(&p.ProductId, &p.Title, &picts, &p.Price)
 		list := strings.Split(picts, "];[")
-		// TODO split return 2 item in some casess, is this a bug ?
 		p.Photo = list[0]
 		items = append(items, p)
 		// TODO we need just avatar photo
@@ -36,7 +36,7 @@ func getProductes(catigory string) ([]Product, error) {
 
 // select All product from db
 func myProducts(ownerid int) []Product {
-	rows, err := db.Query("select productID, title, description, photos, price from stores.products where ownerid = ?", ownerid)
+	rows, err := db.Query("select productID, catigory, title, description, photos, price from stores.products where ownerid = ?", ownerid)
 	if err != nil {
 		fmt.Println("at query func owner id db select ", err)
 	}
@@ -47,7 +47,7 @@ func myProducts(ownerid int) []Product {
 
 	// iterate over rows
 	for rows.Next() {
-		err = rows.Scan(&p.ProductId, &p.Title, &p.Description, &p.Photo, &p.Price)
+		err = rows.Scan(&p.ProductId, &p.Catigory, &p.Title, &p.Description, &p.Photo, &p.Price)
 		if err != nil {
 			fmt.Println("err when getting Porducts from db. at rews.Next()", err)
 			return nil
@@ -83,31 +83,26 @@ func myStores(c echo.Context) error { // TODO rename to myproduct ??
 	return nil
 }
 
-// getProduct get all data of one product from db, and reder it
+// getProduct get & render all data of one product.
 func getProds(c echo.Context) error {
 	data := make(map[string]interface{})
 
 	sess, _ := session.Get("session", c)
-	uid := sess.Values["userid"]
+
+	userid := sess.Values["userid"]
 
 	catigory := c.Param("catigory") // TODO home or catigory.html ?
+	fmt.Println("animals end point, caticory is : ", catigory)
 
-	data["username"] = sess.Values["name"]
-	data["userid"] = uid
+	data["username"] = sess.Values["username"]
+	data["userid"] = userid
 	data["subCatigories"] = catigories[catigory] // from router.go
-	data["products"], _ = getProductes(catigory)
-
-	// TODO : handle or ignore this error ?
-	//if err != nil {
-	//	fmt.Println("in gitCatigories: ", err)
-	//}
-
-	err := c.Render(http.StatusOK, "products.html", data)
+	data["products"], err = getProductes(catigory)
 	if err != nil {
-		//  template: products.html:27:23: executing "products.html" at <.Id>: can't evaluate field Id in type main.Product
-
 		fmt.Println("in gitCatigories: ", err)
 	}
+
+	fmt.Println(c.Render(http.StatusOK, "products.html", data))
 	return nil
 }
 

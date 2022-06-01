@@ -22,7 +22,7 @@ func main() {
 	e.Renderer = templ()
 
 	// files
-	e.Static("/a", assets())
+	e.Static("/assets", assets())
 	e.Static("/fs", photoFold())
 
 	// account and verefy
@@ -38,11 +38,11 @@ func main() {
 	// store and product
 	e.GET("/mystore", myStores)
 	e.GET("/stores", stores)
-	e.GET("/delete/:id", deleteProd)
 	e.GET("/:catigory", getProds) // ??
 	e.GET("/product/:id", getOneProd)
 	e.GET("/update/:id", updateProdPage)
 	e.POST("/update/:id", updateProd)
+	e.GET("/delete/:id", deleteProd)
 
 	e.GET("/updatefotos/:id", updateFotosPage)
 	e.POST("/updatefotos/:id", updateProdFotos)

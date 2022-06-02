@@ -25,13 +25,14 @@ func updateFotosPage(c echo.Context) error {
 	pid := c.Param("id")
 	productId, _ := strconv.Atoi(pid)
 
-	data["productFotos"], err = getProductFotos(productId)
+	productFotos, err := getProductFotos(productId)
 	data["productId"] = productId
+	data["productFotos"] = productFotos
 	fmt.Printf("product is : %#v", data["productFotos"])
 	if err != nil {
 		fmt.Println(err)
 	}
-	err := c.Render(http.StatusOK, "updatefotos.html", data)
+	err = c.Render(http.StatusOK, "updatefotos.html", data)
 	if err != nil {
 		fmt.Println("\nerr is : ", err)
 	}

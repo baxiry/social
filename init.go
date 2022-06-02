@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"log"
 	"os"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
@@ -56,46 +58,31 @@ func assets() string {
 	return "assets"
 }
 
-// init database
-var (
-	db  *sql.DB
-	err error
-)
+var db *sql.DB
 
 func setdb() *sql.DB {
-	db, err = sql.Open(
+	db, err := sql.Open(
 		"mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
-	if err != nil { // why no error when db is not runinig ??
-		fmt.Println("run mysql server", err)
-		// TODO report this error.
+	if err != nil {
 
-		// wehen db is stoped no error is return.
-		// we expecte errore no database is runing
+		log.Println("open database error: ", err)
+		switch {
+		case strings.Contains(err.Error(), "connection refused"):
+			// TODO handle errors by code of error not by strings.
 
-		// my be this error is fixed with panic ping pong bellow
-	}
-
-	if err = db.Ping(); err != nil {
-		// TODO handle this error: dial tcp 127.0.0.1:3306: connect: connection refused
-		fmt.Println("mybe database is not runing or error is: ", err)
-		os.Exit(1)
+			//cmd := exec.Command("mysql.server", "restart")
+			// for systemd linux : exec.Command("sudo", "service", "mariadb", "start")
+			//cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))
+			//err = cmd.Run()
+			if err != nil {
+				fmt.Println("error when run database cmd ", err)
+			}
+		default:
+			log.Println("not knowen err at db.Ping() func")
+			log.Println("unknown this error", err)
+			os.Exit(1)
+			//return nil
+		}
 	}
 	return db
 }
-
-/* TODO handle error
-func customHTTPErrorHandler(err error, c echo.Context) {
-	code := http.StatusInternalServerError
-	if he, ok := err.(*echo.HTTPError); ok {
-		code = he.Code
-	}
-    errorPage := fmt.Sprint("/404.html", code)
-	if err := c.File(errorPage); err != nil {
-		c.Logger().Error(err)
-	}
-    fmt.Println(err)
-    //c.Redirect(303, "notfound.html")
-    c.Redirect(http.StatusSeeOther, "/notfound") // 303 code
-    return
-}
-*/

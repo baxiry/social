@@ -81,18 +81,14 @@ func Search(c echo.Context) error {
 	sess, _ := session.Get("session", c)
 
 	uid := sess.Values["userid"]
-	username := sess.Values["username"]
-
-	data["username"] = username
-
 	if uid == nil {
 		// login first
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 
-	data["username"], data["email"], data["phon"], data["linkavatar"] = getUserInfo(uid.(int))
-
+	username := sess.Values["username"]
 	data["userid"] = uid
+	data["username"] = username
 
 	fmt.Println(data)
 

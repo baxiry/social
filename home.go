@@ -23,28 +23,49 @@ func homePage(c echo.Context) error {
 	data := make(map[string]interface{}, 3)
 	data["username"] = username
 	data["userid"] = uid
-	data["catigories"] = catigories
-	err := c.Render(http.StatusOK, "home.html", data)
-	if err != nil {
-		fmt.Println(err)
-		return nil
-	}
+	fmt.Println(c.Render(http.StatusOK, "home.html", data))
 	return nil
 }
 
-/* TODO handle error
-func customHTTPErrorHandler(err error, c echo.Context) {
-	code := http.StatusInternalServerError
-	if he, ok := err.(*echo.HTTPError); ok {
-		code = he.Code
+// getCatigories get all photo name of catigories.
+// res, err := db.Query(
+//		"SELECT productId, title, photos, price FROM stores.products WHERE catigory = ?", catigory)
+/*
+	for res.Next() {
+		res.Scan(&p.ProductId, &p.Title, &picts, &p.Price)
+		list := strings.Split(picts, "];[")
+		p.Photo = list[0]
+		items = append(items, p)
+		// TODO we need just avatar photo
 	}
-    errorPage := fmt.Sprint("/404.html", code)
-	if err := c.File(errorPage); err != nil {
-		c.Logger().Error(err)
+
+*/
+
+/*
+
+type Profile struct{}
+
+func Profile(profileId int) (profile Profile) {
+	rows, err := db.Query("select productID, catigory, title, description, photos, price from stores.products where ownerid = ?", ownerid)
+	if err != nil {
+		fmt.Println("at query func owner id db select ", err)
 	}
-    fmt.Println(err)
-    //c.Redirect(303, "notfound.html")
-    c.Redirect(http.StatusSeeOther, "/notfound") // 303 code
-    return
+	defer rows.Close() // ??
+
+	// iterate over rows
+	for rows.Next() {
+		err = rows.Scan(&p.ProductId, &p.Catigory, &p.Title, &p.Description, &p.Photo, &p.Price)
+		if err != nil {
+			fmt.Println("err when getting Porducts from db. at rews.Next()", err)
+			return nil
+		}
+		if p.Photo == "" {
+			fmt.Println("no fotots")
+		}
+		products = append(products, p)
+
+	}
+	return profile
 }
+
 */

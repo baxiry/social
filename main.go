@@ -12,9 +12,6 @@ func main() {
 	defer db.Close()
 
 	e := echo.New()
-	//SetupRoutes()
-	//e.GET("/a", contentHandler, contentRewrite)
-	//e.HTTPErrorHandler = customHTTPErrorHandler
 
 	// TODO store secret key in envrenment
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
@@ -35,25 +32,14 @@ func main() {
 	e.GET("/upacount", updateAcount)
 	e.POST("/upacount", updateAcountInfo)
 
-	// store and product
-	e.GET("/mystore", myStores)
-	e.GET("/stores", stores)
-	e.GET("/:catigory", getProds) // ??
-	e.GET("/product/:id", getOneProd)
-	e.GET("/update/:id", updateProdPage)
-	e.POST("/update/:id", updateProd)
-	e.GET("/delete/:id", deleteProd)
+	e.GET("/messages", MessagesPage) //reacent
+	e.GET("/activity", Activity)     //reacent
+	e.GET("/search", Search)         //reacent
 
 	e.GET("/updatefotos/:id", updateFotosPage)
-	e.POST("/updatefotos/:id", updateProdFotos)
+	//e.POST("/updatefotos/:id", updateProdFotos)
 
-	e.GET("/upload", createProductPage)
-	e.POST("/upload", createProduct)
 	//e.GET("/:catigory/:id", getOneProd) // whech is beter ? :catigory or /product ?
-
-	// not found pages
-	//e.GET("/:ok/:ok/:ok", notFoundPage)
-	//e.GET("/:ok/", notFoundPage)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }

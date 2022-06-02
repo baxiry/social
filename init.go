@@ -26,11 +26,10 @@ func templ() *Template {
 	//	p = "/root/store/"
 	//}
 	files := []string{
-		p + "tmpl/home.html", p + "tmpl/upacount.html", p + "tmpl/acount.html", p + "tmpl/login.html", p + "tmpl/sign.html",
-		p + "tmpl/404.html", p + "tmpl/updateProd.html",
-		p + "tmpl/stores.html", p + "tmpl/mystore.html", p + "tmpl/notfound.html",
-		p + "tmpl/upload.html", p + "tmpl/product.html", p + "tmpl/products.html",
-		p + "tmpl/part/header.html", p + "tmpl/part/footer.html", p + "tmpl/updatefotos.html",
+		p + "tmpl/home.html", p + "tmpl/sign.html", p + "tmpl/login.html",
+		p + "tmpl/updatefotos.html", p + "tmpl/404.html", p + "tmpl/acount.html",
+		p + "tmpl/upload.html", p + "tmpl/upacount.html", p + "tmpl/messages.html",
+		p + "tmpl/part/header.html", p + "tmpl/part/footer.html", p + "tmpl/activity.html",
 	}
 	return &Template{templates: template.Must(template.ParseFiles(files...))}
 }
@@ -84,12 +83,19 @@ func setdb() *sql.DB {
 	return db
 }
 
-var catigories = map[string][]string{
-	"cars":      {"mersides", "volswagn", "shefrole", "ford", "jarary", "jawad"},
-	"animals":   {"dogs", "sheeps", "elephens", "checkens", "lions"},
-	"motors":    {"harly", "senteroi", "basher", "hddaf", "mobilite"},
-	"mobiles":   {"sumsung", "apple", "oppo", "netro", "nokia"},
-	"computers": {"dell", "toshipa", "samsung", "hwawi", "hamed"},
-	"services":  {"penter", "developer", "cleaner", "shooter", "gamer"}, //services
-	"others":    {"somthing", "another-somth", "else", "anythings"},
+/* TODO handle error
+func customHTTPErrorHandler(err error, c echo.Context) {
+	code := http.StatusInternalServerError
+	if he, ok := err.(*echo.HTTPError); ok {
+		code = he.Code
+	}
+    errorPage := fmt.Sprint("/404.html", code)
+	if err := c.File(errorPage); err != nil {
+		c.Logger().Error(err)
+	}
+    fmt.Println(err)
+    //c.Redirect(303, "notfound.html")
+    c.Redirect(http.StatusSeeOther, "/notfound") // 303 code
+    return
 }
+*/

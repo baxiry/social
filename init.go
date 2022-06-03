@@ -13,6 +13,69 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// init and create database;
+var (
+	appName   = "social"
+	tableName = "users"
+	db        *sql.DB
+)
+
+func createDB(dbName string, db *sql.DB) {
+	//CREATE DATABASE ;
+	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS " + dbName)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func createTable(dbName, tableName string, db *sql.DB) {
+	//CREATE DATABASE ;
+	tbname := dbName + "." + tableName
+	_, err := db.Exec(`
+	CREATE TABLE IF NOT EXISTS ` + tbname + `  (
+    userid int unsigned NOT NULL AUTO_INCREMENT,
+    username varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
+    email varchar(255) UNIQUE NOT NULL,
+    photos text NOT NULL DEFAULT "",
+    number_photos int NOT NULL DEFAULT 0,
+    PRIMARY KEY (userid)
+	);`)
+	if err != nil {
+		panic(err)
+	}
+}
+func setdb() *sql.DB {
+	db, err := sql.Open(
+		"mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
+	if err != nil {
+
+		log.Println("open database error: ", err)
+		switch {
+		case strings.Contains(err.Error(), "connection refused"):
+			// TODO handle errors by code of error not by strings.
+
+			//cmd := exec.Command("mysql.server", "restart")
+			// for systemd linux : exec.Command("sudo", "service", "mariadb", "start")
+			//cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))
+			//err = cmd.Run()
+			if err != nil {
+				fmt.Println("error when run database cmd ", err)
+			}
+		default:
+			log.Println("not knowen err at db.Ping() func")
+			log.Println("unknown this error", err)
+			os.Exit(1)
+			//return nil
+		}
+	}
+
+	createDB(appName, db)
+	createTable(appName, tableName, db)
+
+	return db
+}
+
 type Template struct {
 	templates *template.Template
 }
@@ -56,33 +119,4 @@ func assets() string {
 		return "/root/social/assets"
 	}
 	return "assets"
-}
-
-var db *sql.DB
-
-func setdb() *sql.DB {
-	db, err := sql.Open(
-		"mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
-	if err != nil {
-
-		log.Println("open database error: ", err)
-		switch {
-		case strings.Contains(err.Error(), "connection refused"):
-			// TODO handle errors by code of error not by strings.
-
-			//cmd := exec.Command("mysql.server", "restart")
-			// for systemd linux : exec.Command("sudo", "service", "mariadb", "start")
-			//cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))
-			//err = cmd.Run()
-			if err != nil {
-				fmt.Println("error when run database cmd ", err)
-			}
-		default:
-			log.Println("not knowen err at db.Ping() func")
-			log.Println("unknown this error", err)
-			os.Exit(1)
-			//return nil
-		}
-	}
-	return db
 }

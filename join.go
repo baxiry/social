@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
@@ -30,8 +31,10 @@ func signup(c echo.Context) error {
 	name := c.FormValue("username")
 	pass := c.FormValue("password")
 	email := c.FormValue("email")
-	phon := c.FormValue("phon")
-	err := insertUser(name, pass, email, phon)
+	photos := c.FormValue("phon")
+	fmt.Println(name, pass, email, photos)
+	err := insertUser(name, pass, email, photos)
+
 	if err != nil {
 		//fmt.Println(err)
 		return c.Render(200, "sign.html", "wrrone")
@@ -49,13 +52,15 @@ func loginPage(c echo.Context) error {
 }
 
 // insertUser register new user in db
-func insertUser(user, pass, email, phon string) error {
+func insertUser(user, pass, email, photos string) error {
 	insert, err := db.Query(
-		"INSERT INTO stores.users(username, password, email, phon) VALUES ( ?, ?, ?, ? )",
-		user, pass, email, phon)
+		"INSERT INTO social.users(username, password, email, photos) VALUES ( ?, ?, ?, ? )",
+		user, pass, email, photos)
 
 	// if there is an error inserting, handle it
 	if err != nil {
+		fmt.Println("error is : ", err)
+		os.Exit(-1)
 		return err
 	}
 	// be careful deferring Queries if you are using transactions
@@ -68,10 +73,11 @@ func getUsername(femail string) (int, string, string, string) {
 	var name, email, password string
 	var userid int
 	err := db.QueryRow(
-		"SELECT userid, username, email, password FROM stores.users WHERE email = ?",
+		//"SELECT userid, username, email, password FROM social.users WHERE email = ?",
+		"SELECT userid, username, email, password FROM social.users WHERE email = ?",
 		femail).Scan(&userid, &name, &email, &password)
 	if err != nil {
-		fmt.Println("no result or", err.Error())
+		fmt.Println(err.Error())
 	}
 	return userid, name, email, password
 }

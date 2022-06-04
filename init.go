@@ -28,23 +28,6 @@ func createDB(dbName string, db *sql.DB) {
 	}
 }
 
-func createTable(dbName, tableName string, db *sql.DB) {
-	//CREATE DATABASE ;
-	tbname := dbName + "." + tableName
-	_, err := db.Exec(`
-	CREATE TABLE IF NOT EXISTS ` + tbname + `  (
-    userid int unsigned NOT NULL AUTO_INCREMENT,
-    username varchar(255) NOT NULL,
-    password varchar(255) NOT NULL,
-    email varchar(255) UNIQUE NOT NULL,
-    photos text NOT NULL DEFAULT "",
-    number_photos int NOT NULL DEFAULT 0,
-    PRIMARY KEY (userid)
-	);`)
-	if err != nil {
-		panic(err)
-	}
-}
 func setdb() *sql.DB {
 	db, err := sql.Open(
 		"mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
@@ -69,9 +52,6 @@ func setdb() *sql.DB {
 			//return nil
 		}
 	}
-
-	createDB(appName, db)
-	createTable(appName, tableName, db)
 
 	return db
 }
@@ -119,4 +99,22 @@ func assets() string {
 		return "/root/social/assets"
 	}
 	return "assets"
+}
+
+func createTable(dbName, tableName string, db *sql.DB) {
+	//CREATE DATABASE ;
+	//tbname := dbName + "." + tableName   // ` + tbname + `
+	_, err := db.Exec(`
+	CREATE TABLE IF NOT EXISTS social.users  (
+    userid int unsigned NOT NULL AUTO_INCREMENT,
+    username varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
+    email varchar(255) UNIQUE NOT NULL,
+    photos text NOT NULL DEFAULT "",
+    number_photos int NOT NULL DEFAULT 0,
+    PRIMARY KEY (userid)
+	);`)
+	if err != nil {
+		panic(err)
+	}
 }

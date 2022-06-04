@@ -10,15 +10,15 @@ import (
 )
 
 // gets all user information for update this info
-func getUserInfo(userid int) (string, string, string, string) {
-	var name, email, phon, avatar string
+func getUserInfo(userid int) (string, string, string) {
+	var username, email, photos string
 	err := db.QueryRow(
-		"SELECT username, email,phon, linkavatar FROM stores.users WHERE userid = ?",
-		userid).Scan(&name, &email, &phon, &avatar)
+		"SELECT username, email,photos FROM social.users WHERE userid = ?",
+		userid).Scan(&username, &email, &photos)
 	if err != nil {
 		fmt.Println("no result or", err.Error())
 	}
-	return name, email, phon, avatar
+	return username, email, photos
 }
 
 // update user info in db
@@ -90,7 +90,7 @@ func updateAcount(c echo.Context) error {
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 
-	data["username"], data["email"], data["phon"], data["linkavatar"] = getUserInfo(uid.(int))
+	data["username"], data["email"], data["phon"] = getUserInfo(uid.(int))
 
 	data["userid"] = uid
 

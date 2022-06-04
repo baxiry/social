@@ -23,7 +23,7 @@ func Activity(c echo.Context) error {
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 
-	data["username"], data["email"], data["phon"], data["linkavatar"] = getUserInfo(uid.(int))
+	data["username"], data["email"], data["phon"] = getUserInfo(uid.(int))
 
 	data["userid"] = uid
 
@@ -59,7 +59,7 @@ func LikeMe(c echo.Context) error {
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 
-	data["username"], data["email"], data["phon"], data["linkavatar"] = getUserInfo(uid.(int))
+	data["username"], data["email"], data["phon"] = getUserInfo(uid.(int))
 
 	data["userid"] = uid
 

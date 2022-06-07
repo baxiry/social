@@ -19,6 +19,7 @@ type User struct {
 }
 
 func homePage(c echo.Context) error {
+
 	sess, _ := session.Get("session", c)
 	username := sess.Values["username"]
 	userid := sess.Values["userid"]

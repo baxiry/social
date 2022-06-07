@@ -8,38 +8,54 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// notFoundPage
-//func notFoundPage(c echo.Context) error {
-//  return c.Render(200, "notfound.html", nil)
-//}
+type User struct {
+	UserId       uint64
+	Username     string
+	Password     string
+	Email        string
+	Gender       string
+	Photos       string
+	NemberPhotos int
+}
 
 func homePage(c echo.Context) error {
-
 	sess, _ := session.Get("session", c)
 	username := sess.Values["username"]
-	uid := sess.Values["userid"]
-	//fmt.Println("name is : ", name)
+	userid := sess.Values["userid"]
 
 	data := make(map[string]interface{}, 3)
+
 	data["username"] = username
-	data["userid"] = uid
+	data["userid"] = userid
+	users := getRecentUsers()
+	for _, u := range users {
+		fmt.Println(u)
+	}
+	data["users"] = users
 	fmt.Println(c.Render(http.StatusOK, "home.html", data))
 	return nil
 }
 
-// getCatigories get all photo name of catigories.
-// res, err := db.Query(
-//		"SELECT productId, title, photos, price FROM stores.products WHERE catigory = ?", catigory)
-/*
+//getCatigories get all photo name of catigories.
+func getRecentUsers() (users []User) {
+	res, err := db.Query(
+		"SELECT userid, username, email, photos from social.users;")
+	if err != nil {
+		fmt.Println("getResentUsers error : ", err)
+	}
+	defer res.Close()
+
+	var u User
 	for res.Next() {
-		res.Scan(&p.ProductId, &p.Title, &picts, &p.Price)
-		list := strings.Split(picts, "];[")
-		p.Photo = list[0]
-		items = append(items, p)
-		// TODO we need just avatar photo
+		res.Scan(&u.UserId, &u.Username, &u.Email, &u.Photos)
+		users = append(users, u)
 	}
 
-*/
+	for _, u := range users {
+		fmt.Println(u)
+	}
+	return users
+}
 
 /*
 

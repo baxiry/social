@@ -3,9 +3,12 @@
     <div class='container'>
         <h3>acount page</h3>
         <h3>name is : {{.username}}</h3>
-        <img src="/fs/fox2.jpg" >
+
+        <div style="width:100%; height: 300px; background-color:grey;">
+          <img src="/fs/{{.photos}}" class="h-100 d-inline-block"  ><br>
+        </div>
+
         <a href="/upacount">Edit acount</a>
-        <!-- <img src="/fs/{{.avatar}}" >-->
 
 
 </body>

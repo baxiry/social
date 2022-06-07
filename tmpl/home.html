@@ -1,10 +1,24 @@
 {{template "header.html" .}}
 <body>
 <!-- header is head and navbar -->
-
+<div class="container">
 <div class="p-5"><h1>Home page</h1></div> 
-<br>
-    footer  copyryght 2020
+username : {{.username}} <br>
+userid : {{.userid}} <br>
+
+
+{{range .users}}
+<div class="p-2 m-2 w border border-2">
+  username:   {{.Username}} <br>
+  photo :  {{.Photos}}
 </div>
+{{end}}
+
+
+</div>
+</div>
+    
+<footer>
+</footer>
 </body>
 </html>

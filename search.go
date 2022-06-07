@@ -61,7 +61,7 @@ func Search_one(c echo.Context) error {
 	phon := c.FormValue("phon")
 	fmt.Println("name+email+phon is :", name, email, phon)
 
-	err := updateUserInfo(name, email, phon, uid.(int))
+	err := updateUserInfo(name, uid.(int))
 	if err != nil {
 		fmt.Println("error at update db function", err)
 	}

@@ -10,6 +10,8 @@ import (
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/sessions"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
@@ -71,10 +73,10 @@ func templ() *Template {
 	//	p = "/root/store/"
 	//}
 	files := []string{
-		p + "tmpl/home.html", p + "tmpl/sign.html", p + "tmpl/login.html",
-		p + "tmpl/updatefotos.html", p + "tmpl/404.html", p + "tmpl/acount.html",
+		p + "tmpl/updatefotos.html", p + "tmpl/acount.html", p + "tmpl/search.html",
 		p + "tmpl/upload.html", p + "tmpl/upacount.html", p + "tmpl/messages.html",
 		p + "tmpl/part/header.html", p + "tmpl/part/footer.html", p + "tmpl/activity.html",
+		p + "tmpl/home.html", p + "tmpl/sign.html", p + "tmpl/login.html", p + "tmpl/user.html",
 	}
 	return &Template{templates: template.Must(template.ParseFiles(files...))}
 }
@@ -117,4 +119,27 @@ func createTable(dbName, tableName string, db *sql.DB) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+// GetSession return username & userid as session's user
+func GetSession(c echo.Context) (string, int, error) {
+	sess, _ := session.Get("session", c)
+	if sess.Values["userid"] == nil {
+
+		return "", 0, fmt.Errorf("no session")
+	}
+	return sess.Values["username"].(string), sess.Values["userid"].(int), nil
+}
+
+// newSession creates new session
+func NewSession(c echo.Context, username string, userid int) {
+	sess, _ := session.Get("session", c)
+	sess.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   60 * 60, // = 1h,
+		HttpOnly: true,    // no websocket or any thing else
+	}
+	sess.Values["username"] = username
+	sess.Values["userid"] = userid
+	sess.Save(c.Request(), c.Response())
 }

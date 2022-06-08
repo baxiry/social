@@ -9,6 +9,23 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func UserProfile(c echo.Context) error {
+
+	//userid, _ := strconv.Atoi(c.QueryParam("userid"))
+
+	data := make(map[string]interface{}, 1)
+
+	data["username"], data["userid"], _ = GetSession(c)
+
+	id, _ := strconv.Atoi(c.QueryParam("id"))
+
+	data["name"], data["email"], data["photo"] = getUserInfo(id)
+
+	fmt.Println(data)
+	fmt.Println(c.Render(200, "user.html", data))
+	return nil
+}
+
 // updateAcount updates Acount information
 func updateAcount(c echo.Context) error {
 	sess, _ := session.Get("session", c)
@@ -28,7 +45,7 @@ func updateAcount(c echo.Context) error {
 	return nil
 }
 
-// gets all user information for update this info
+// getUserIfor from db
 func getUserInfo(userid int) (string, string, string) {
 	var username, email, photos string
 	err := db.QueryRow(

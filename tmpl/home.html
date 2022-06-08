@@ -10,17 +10,21 @@
   <div class="row justify-content-evenly">
 {{range .users}}
       <div class="col-3">
+        <a href="/user/{{.UserId}}" >
+
+
       <div class="card shadow-sm">
-        <img src="{{.Photos}}" class="card-img-top" alt="">
+        <img src="/fs/{{.Photos}}" class="card-img-top" alt="">
         <div class="card-body">
           <h3 class="card-title">{{.Username}}</h3>
           <p class="card-text">{{.UserId}}</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
+          </a>
     </div>
 {{end}}
   </div>
+
 
 </div>
 <footer>

@@ -1,24 +1,21 @@
 {{template "header.html" .}}
 <body>
-    <div class='container'>
-        <h3>update acount information </h3>
-        <h2>{{.username}}</h2>    
 
+<div class='container'>
+    <h3>update acount information </h3>
+    <h2>{{.username}}</h2>    
 
-<div style="height: 300px; background-color: rgba(255,0,0,0.1);">
-        <img src="/fs/{{.photos}}" class="h-100 d-inline-block"><br>
-     <div class="p-1 h-auto d-inline-block" style="width: 120px;">
+    <div style="height: 300px; background-color: rgba(255,0,0,0.1);">
+    <img src="/fs/{{.photos}}" class="h-100 d-inline-block"><br>
+    <div id="update-name" class="p-1 h-auto d-inline-block" style="width: 120px;">
         {{.username}}
-        <button name=username value={{.username}}> update </button> 
-     </div><br>
-     <div class="p-1 h-auto d-inline-block" style="width: 120px;">
+        <button name=username  value={{.username}}  onclick="creatInput()"> update </button> 
+    </div> <br>
+    <div class="p-1 h-auto d-inline-block" style="width: 120px;">
         {{.email}}
-        <button name=email value={{.email}}> update </button> 
-     </div>
-
-
+        <button name=email value={{.email}}  onclick="putData()" > update </button> 
+    </div>
 </div>
-
-
+<script type="text/javascript" src="/assets/app.js"></script>
 </body>
 </html>

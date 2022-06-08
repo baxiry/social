@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gorilla/sessions"
-	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
@@ -64,19 +62,6 @@ func selectUser(femail string) (int, string, string) {
 		fmt.Println(err.Error())
 	}
 	return userid, username, password
-}
-
-// newSession creates new session
-func NewSession(c echo.Context, username string, userid int) {
-	sess, _ := session.Get("session", c)
-	sess.Options = &sessions.Options{
-		Path:     "/",
-		MaxAge:   60 * 60, // = 1h,
-		HttpOnly: true,    // no websocket or any thing else
-	}
-	sess.Values["username"] = username
-	sess.Values["userid"] = userid
-	sess.Save(c.Request(), c.Response())
 }
 
 func signPage(c echo.Context) error {

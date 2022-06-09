@@ -11,37 +11,26 @@ import (
 
 func UserProfile(c echo.Context) error {
 
-	//userid, _ := strconv.Atoi(c.QueryParam("userid"))
-
 	data := make(map[string]interface{}, 1)
 
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println("id from param ", c.Param("id"))
+	id, _ := strconv.Atoi(c.Param("id"))
 
 	data["name"], data["email"], data["photo"] = getUserInfo(id)
 
-	fmt.Println(data)
 	fmt.Println(c.Render(200, "user.html", data))
 	return nil
 }
 
 func Profile(c echo.Context) error {
 
-	//userid, _ := strconv.Atoi(c.QueryParam("userid"))
-
 	data := make(map[string]interface{}, 1)
 
 	data["username"], data["userid"], _ = GetSession(c)
 
-	id, _ := strconv.Atoi(c.QueryParam("id"))
+	id, _ := strconv.Atoi(c.Param("id"))
 
 	data["name"], data["email"], data["photo"] = getUserInfo(id)
 
-	fmt.Println(data)
 	fmt.Println(c.Render(200, "user.html", data))
 	return nil
 }

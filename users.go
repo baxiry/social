@@ -15,7 +15,10 @@ func UserProfile(c echo.Context) error {
 
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	data["name"], data["email"], data["photo"] = getUserInfo(id)
+	user := getUserInfo(id)
+
+	fmt.Println("user password is : ", user.Password)
+	data["user"] = user
 
 	fmt.Println(c.Render(200, "user.html", data))
 	return nil
@@ -29,42 +32,46 @@ func Profile(c echo.Context) error {
 
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	data["name"], data["email"], data["photo"] = getUserInfo(id)
+	data["user"] = getUserInfo(id)
 
 	fmt.Println(c.Render(200, "user.html", data))
 	return nil
 }
 
 // updateAcount updates Acount information
-func updateAcount(c echo.Context) error {
-	sess, _ := session.Get("session", c)
-	uid := sess.Values["userid"]
-	if uid == nil {
-		// login first
-		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
+func UpdateAcount(c echo.Context) error {
+	fmt.Println("update account")
+
+	username, userid, err := GetSession(c)
+	if err != nil {
+		//println(c.Redirect(http.StatusSeeOther, "/login"))
+		fmt.Println("error of upacount handler is ", err)
+		return nil
+
 	}
-	username := sess.Values["username"]
 
 	data := make(map[string]interface{}, 1)
+
 	data["username"] = username
-	data["username"], data["email"], data["photos"] = getUserInfo(uid.(int))
-	data["userid"] = uid
+	data["userid"] = userid
+	data["user"] = getUserInfo(userid)
+
 	fmt.Println(data)
+
 	fmt.Println(c.Render(200, "upacount.html", data))
 	return nil
 }
 
 // getUserIfor from db
-func getUserInfo(userid int) (string, string, string) {
-	var username, email, photos string
+func getUserInfo(userid int) (user User) {
 	err := db.QueryRow(
 		"SELECT username, email, photos FROM social.users WHERE userid = ?",
-		userid).Scan(&username, &email, &photos)
+		userid).Scan(&user.Username, &user.Email, &user.Photos)
 
 	if err != nil {
 		fmt.Println("no result or", err.Error())
 	}
-	return username, email, photos
+	return user
 }
 
 // update user info in db
@@ -132,7 +139,7 @@ func acount(c echo.Context) error {
 	data["username"] = sess.Values["username"]
 	data["userid"] = userid
 
-	_, _, data["photos"] = getUserInfo(userid.(int))
+	data["user"] = getUserInfo(userid.(int))
 
 	return c.Render(200, "acount.html", data)
 }

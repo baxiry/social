@@ -30,8 +30,8 @@ func main() {
 	e.POST("/login", login)
 	e.GET("/acount/:id", acount)
 	e.GET("/user/:id", UserProfile)
-	e.GET("/upacount", updateAcount)
-	e.POST("/upacount", updateAcountInfo)
+	e.GET("/upacount", UpdateAcount)
+	//e.POST("/upacount", UpdateAcountInfo)
 
 	e.GET("/messages", MessagesPage) //reacent
 	e.GET("/activity", Activity)     //reacent

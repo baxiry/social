@@ -22,22 +22,19 @@ func SelectMessages(userid int) (string, string, string, string) {
 
 // updateAcount updates Acount information
 func updateMessage(c echo.Context) error {
-	data := make(map[string]interface{}, 1)
-	sess, _ := session.Get("session", c)
 
-	uid := sess.Values["userid"]
-	username := sess.Values["username"]
+	username, userid, err := GetSession(c)
 
-	data["username"] = username
-
-	if uid == nil {
+	if err == nil {
 		// login first
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 
-	data["username"], data["email"], data["phon"] = getUserInfo(uid.(int))
+	data := make(map[string]interface{}, 1)
+	data["username"] = username
+	data["userid"] = userid
 
-	data["userid"] = uid
+	data["user"] = getUserInfo(userid)
 
 	fmt.Println(data)
 

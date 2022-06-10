@@ -10,15 +10,23 @@ import (
 )
 
 func UserProfile(c echo.Context) error {
+	username, userid, err := GetSession(c)
+	if err != nil {
+		//println(c.Redirect(http.StatusSeeOther, "/login"))
+		fmt.Println("error of upacount handler is ", err)
+		return nil
+
+	}
 
 	data := make(map[string]interface{}, 1)
-
 	id, _ := strconv.Atoi(c.Param("id"))
 
 	user := getUserInfo(id)
-
-	fmt.Println("user password is : ", user.Password)
+	user.UserId = id
 	data["user"] = user
+
+	data["userid"] = userid
+	data["username"] = username
 
 	fmt.Println(c.Render(200, "user.html", data))
 	return nil

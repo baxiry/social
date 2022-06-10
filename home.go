@@ -9,7 +9,7 @@ import (
 )
 
 type User struct {
-	UserId       uint64
+	UserId       int
 	Username     string
 	Password     string
 	Email        string
@@ -30,7 +30,7 @@ func homePage(c echo.Context) error {
 	data["userid"] = userid
 	users := getRecentUsers()
 	for _, u := range users {
-		fmt.Println(u)
+		fmt.Println(u.UserId)
 	}
 	data["users"] = users
 	fmt.Println(c.Render(http.StatusOK, "home.html", data))

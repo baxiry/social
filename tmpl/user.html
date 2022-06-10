@@ -1,30 +1,25 @@
 <!-- user profile -->
 {{template "header.html" .}}
 <body>
-
-
-
-
 <div class='container'>
 <div class="p-2 m-2 border border-2">
-
-        
 
     <div  style="background-color: rgba(200, 200, 200, 200);">
         {{if eq .user.Photos "" }}
             <h1> no photo </h1>  
         {{else}}
-            <img src="/fs/heba.jpg" class="col-5 h-100 d-inline-block" ><br>
+        <img src="/fs/{{.user.Photos}}" class="col-5 h-100 d-inline-block" ><br>
         {{end}}
     {{if eq .userid .user.UserId}}
     <a href="/upacount/{{.user.UserId}}">Edit acount</a>
     {{end}}
 
 
-        <h2 class=name>username {{.username}}</h2>
-        <h2 class=name>name {{.user.Username}}</h2>
-        <h2 class=name>email {{.user.Email}}</h2>
-        <h2 class=name>photo {{.user.Photos}}</h2>
+        <h3 class=name>my userid {{.userid}}  </h3>
+        <h3 class=name>username {{.username}} </h3>
+        <h3 class=name>name {{.user.Username}}</h3>
+        <h3 class=name>email {{.user.Email}}  </h3>
+        <h3 class=name>photo {{.user.Photos}} </h3>
 
     </div>
     

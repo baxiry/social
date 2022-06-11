@@ -28,9 +28,8 @@ func main() {
 	e.POST("/sign", signup)
 	e.GET("/login", loginPage)
 	e.POST("/login", login)
-	e.GET("/acount/:id", acount)
-	e.GET("/user/:id", UserProfile)
-	e.GET("/upacount", UpdateAcount)
+	e.GET("/user/:id", Profile)
+	e.GET("/upacount", UpdateProfile)
 	//e.POST("/upacount", UpdateAcountInfo)
 
 	e.GET("/messages", MessagesPage) //reacent

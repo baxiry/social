@@ -73,10 +73,10 @@ func templ() *Template {
 	//	p = "/root/store/"
 	//}
 	files := []string{
-		p + "tmpl/updatefotos.html", p + "tmpl/acount.html", p + "tmpl/search.html",
+		p + "tmpl/home.html", p + "tmpl/sign.html", p + "tmpl/login.html",
+		p + "tmpl/updatefotos.html", p + "tmpl/search.html", p + "tmpl/user.html",
 		p + "tmpl/upload.html", p + "tmpl/upacount.html", p + "tmpl/messages.html",
 		p + "tmpl/part/header.html", p + "tmpl/part/footer.html", p + "tmpl/activity.html",
-		p + "tmpl/home.html", p + "tmpl/sign.html", p + "tmpl/login.html", p + "tmpl/user.html",
 	}
 	return &Template{templates: template.Must(template.ParseFiles(files...))}
 }

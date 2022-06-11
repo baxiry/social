@@ -33,10 +33,10 @@
     </div>
         {{if .userid }} 
         {{if eq .username ""}}
-            <a class="btn btn-outline-success m-1 btn-sm" href="/acount/{{.userid}}" >Setting profile first</a>
+            <a class="btn btn-outline-success m-1 btn-sm" href="/user/{{.userid}}" >Setting profile first</a>
             {{else}}
 
-            <a class="btn btn-outline-success m-1 btn-sm" href="/acount/{{.userid}}" >{{.username}}</a>
+            <a class="btn btn-outline-success m-1 btn-sm" href="/user/{{.userid}}" >{{.username}}</a>
         {{end}}
         {{else}}
             <a class="btn btn-outline-success m-1 btn-sm" href="/login">Login</a>

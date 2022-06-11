@@ -9,22 +9,21 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func UserProfile(c echo.Context) error {
+func Profile(c echo.Context) error {
 	username, userid, err := GetSession(c)
 	if err != nil {
 		//println(c.Redirect(http.StatusSeeOther, "/login"))
 		fmt.Println("error of upacount handler is ", err)
-		return nil
+		//return nil
 
 	}
 
-	data := make(map[string]interface{}, 1)
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	user := getUserInfo(id)
-	user.UserId = id
-	data["user"] = user
+	data := make(map[string]interface{}, 1)
+	data["user"] = getUserInfo(id)
 
+	// for session
 	data["userid"] = userid
 	data["username"] = username
 
@@ -32,30 +31,15 @@ func UserProfile(c echo.Context) error {
 	return nil
 }
 
-func Profile(c echo.Context) error {
-
-	data := make(map[string]interface{}, 1)
-
-	data["username"], data["userid"], _ = GetSession(c)
-
-	id, _ := strconv.Atoi(c.Param("id"))
-
-	data["user"] = getUserInfo(id)
-
-	fmt.Println(c.Render(200, "user.html", data))
-	return nil
-}
-
 // updateAcount updates Acount information
-func UpdateAcount(c echo.Context) error {
+func UpdateProfile(c echo.Context) error {
 	fmt.Println("update account")
 
 	username, userid, err := GetSession(c)
 	if err != nil {
-		//println(c.Redirect(http.StatusSeeOther, "/login"))
+		println(c.Redirect(http.StatusSeeOther, "/login"))
 		fmt.Println("error of upacount handler is ", err)
 		return nil
-
 	}
 
 	data := make(map[string]interface{}, 1)
@@ -129,25 +113,5 @@ func updateAcountInfo(c echo.Context) error {
 
 	// redirect to acoun page
 	userid := strconv.Itoa(uid.(int))
-
 	return c.Redirect(303, "/acount/"+userid)
-}
-
-// acount render profile of user.
-func acount(c echo.Context) error {
-	sess, _ := session.Get("session", c)
-	userid := sess.Values["userid"]
-
-	if userid == nil {
-		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
-	}
-
-	data := make(map[string]interface{}, 2)
-
-	data["username"] = sess.Values["username"]
-	data["userid"] = userid
-
-	data["user"] = getUserInfo(userid.(int))
-
-	return c.Render(200, "acount.html", data)
 }

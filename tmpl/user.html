@@ -10,14 +10,8 @@
         {{else}}
         <img src="/fs/{{.user.Photos}}" class="col-5 h-100 d-inline-block" ><br>
         {{end}}
-    {{if eq .userid .user.UserId}}
-    <a href="/upacount/{{.user.UserId}}">Edit acount</a>
-    {{end}}
 
-
-        <h3 class=name>my userid {{.userid}}  </h3>
-        <h3 class=name>username {{.username}} </h3>
-        <h3 class=name>name {{.user.Username}}</h3>
+        <h3 class=name>username {{.user.Username}}</h3>
         <h3 class=name>email {{.user.Email}}  </h3>
         <h3 class=name>photo {{.user.Photos}} </h3>
 

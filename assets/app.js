@@ -9,10 +9,10 @@ function putData() {
     fetch(url+"/upacount", { method: "POST", body: data }); 
 }
 
-// createInput create new input element
-function creatInput() {
-    let elmInput = $("#update-name");
-    elmInput.innerHTML = '<input type="text" placeholder="username" id="inputId">'
+// createInput creates new input element
+function creatInput(id) {
+    let elmInput = $("#"+id);
+    elmInput.innerHTML = '<input type="text" placeholder='+id+' id='+id+'>'
     elmInput.innerHTML += '<button class="btn btn-outline-primary" name=update >update</button>'
 }
 

@@ -9,19 +9,19 @@
 
         <img src="/fs/{{.user.Photos}}" class="h-100 d-inline-block"><br>
 
-        <div id="update-name" class="p-1 h-auto d-inline-block" style="width: 120px;">
-            {{.user.Photos}}
-            <button name=username  value={{.user.Photos}}  onclick="creatinput()"> update </button> 
+        <div id="photos" class="p-1 h-auto d-inline-block" style="width: 120px;">
+        Photos    {{.user.Photos}}
+            <button name=username  value={{.user.Photos}}  onclick="creatInput('photos')"> update </button> 
         </div> <br>
 
-
-        <div id="update-name" class="p-1 h-auto d-inline-block" style="width: 120px;">
+        <div id="username" class="p-1 h-auto d-inline-block" style="width: 120px;">
         username is :    {{.username}}
-            <button name=username  value={{.username}}  onclick="creatinput()"> update </button> 
+            <button name=username  value='{{.user.Username}}'  onclick="creatInput('username')"> update </button> 
         </div> <br>
-        <div class="p-1 h-auto d-inline-block" style="width: 120px;">
+
+        <div id="email", class="p-1 h-auto d-inline-block" style="width: 120px;">
             email is: {{.email}}
-            <button name=email value={{.email}}  onclick="putdata()" > update </button> 
+            <button name=email value={{.user.Email}}  onclick="creatInput('email')" > update </button> 
         </div>
     </div>
 </div>

@@ -92,7 +92,7 @@ func updateUserInfo(field string, userid int) error {
 }
 
 // updateAcount updates Acount information
-func updateAcountInfo(c echo.Context) error {
+func updateAcountPage(c echo.Context) error {
 	//data := make(map[string]interface{},1)
 	sess, _ := session.Get("session", c)
 	uid := sess.Values["userid"]

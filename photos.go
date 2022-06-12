@@ -8,39 +8,31 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
-// updateFotosPage router fo update Fotos Page
-func updateFotosPage(c echo.Context) error {
-	data := make(map[string]interface{})
-	sess, _ := session.Get("session", c)   // TODO i need session ?
-	data["username"] = sess.Values["name"] // TODO use user id instead name
-	if data["username"] == nil {
+// phootosPage router fo update Fotos Page
+func PhotosPage(c echo.Context) error {
+
+	username, userid, err := GetSession(c)
+	if err != nil {
 		fmt.Println("session name is nil redirect to login")
 		c.Redirect(303, "/login")
 	}
 
-	pid := c.Param("id")
-	productId, _ := strconv.Atoi(pid)
+	data := make(map[string]interface{}, 3)
+	photos, err := getProductFotos(userid)
+	data["photos"] = photos
+	data["username"] = username
 
-	productFotos, err := getProductFotos(productId)
-	data["productId"] = productId
-	data["productFotos"] = productFotos
-	fmt.Printf("product is : %#v", data["productFotos"])
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = c.Render(http.StatusOK, "updatefotos.html", data)
-	if err != nil {
-		fmt.Println("\nerr is : ", err)
-	}
+	fmt.Println("fotos is : ", data)
+
+	fmt.Println(c.Render(http.StatusOK, "upfotos.html", data))
 	return nil
 }
 
 // update fotos name in database
-func updateProductFotos(photos string, productId int) error {
+func UpdatePhotos(photos string, productId int) error {
 
 	//Update db
 	stmt, err := db.Prepare("update  stores.products set photos=? where productId=?")
@@ -59,7 +51,7 @@ func updateProductFotos(photos string, productId int) error {
 }
 
 // updateFotos updates photos of products
-func updateProdFotos(c echo.Context) error {
+func UpPhotos(c echo.Context) error {
 
 	pid := c.Param("id")
 	id, err := strconv.Atoi(pid)
@@ -83,7 +75,7 @@ func updateProdFotos(c echo.Context) error {
 	}
 
 	// databas function
-	err = updateProductFotos(picts, id)
+	err = UpdatePhotos(picts, id)
 
 	if err != nil {
 		fmt.Println("error in update product foto", err)

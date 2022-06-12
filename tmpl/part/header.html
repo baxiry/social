@@ -32,16 +32,18 @@
         </li>
     </div>
         {{if .userid }} 
-        {{if eq .username ""}}
-            <a class="btn btn-outline-success m-1 btn-sm" href="/user/{{.userid}}" >Setting profile first</a>
-            {{else}}
-
-            <a class="btn btn-outline-success m-1 btn-sm" href="/user/{{.userid}}" >{{.username}}</a>
-        {{end}}
+            <a class="btn btn-outline-success m-1 btn-sm" href="/user/{{.userid}}" >
+              {{if eq .username ""}}Profile{{else}}{{.username}}{{end}}
+            </a>
         {{else}}
             <a class="btn btn-outline-success m-1 btn-sm" href="/login">Login</a>
             <a class="btn btn-outline-success m-1 btn-sm" href="/sign">Signup</a>
         {{end}}
+
+        {{if .userid }} 
+            <a class="btn btn-outline-success m-1 btn-sm" href="/upacount" >setting</a>
+        {{end}}
+
   </div>
   </div>
 </nav>

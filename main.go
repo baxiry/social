@@ -30,13 +30,14 @@ func main() {
 	e.POST("/login", login)
 	e.GET("/user/:id", Profile)
 	e.GET("/upacount", UpdateProfile)
+	e.GET("/fotos", PhotosPage)
+	e.POST("/upfotos", UpPhotos)
 	//e.POST("/upacount", UpdateAcountInfo)
 
 	e.GET("/messages", MessagesPage) //reacent
 	e.GET("/activity", Activity)     //reacent
 	e.GET("/search", Search)         //reacent
 
-	e.GET("/updatefotos/:id", updateFotosPage)
 	//e.POST("/updatefotos/:id", updateProdFotos)
 
 	//e.GET("/:catigory/:id", getOneProd) // whech is beter ? :catigory or /product ?

@@ -32,7 +32,7 @@ func Profile(c echo.Context) error {
 }
 
 // updateAcount updates Acount information
-func UpdateProfile(c echo.Context) error {
+func UpdatePage(c echo.Context) error {
 	fmt.Println("update account")
 
 	username, userid, err := GetSession(c)
@@ -51,6 +51,29 @@ func UpdateProfile(c echo.Context) error {
 	fmt.Println(data)
 
 	fmt.Println(c.Render(200, "upacount.html", data))
+	return nil
+}
+
+// updateAcount updates Acount information
+func Update(c echo.Context) error {
+	fmt.Println("update account")
+
+	username, userid, err := GetSession(c)
+	if err != nil {
+		println(c.Redirect(http.StatusSeeOther, "/login"))
+		fmt.Println("error of upacount handler is ", err)
+		return nil
+	}
+
+	data := make(map[string]interface{}, 1)
+
+	data["username"] = username
+	data["userid"] = userid
+	data["user"] = getUserInfo(userid)
+
+	fmt.Println(data)
+
+	fmt.Println(c.Render(200, "user.html", data))
 	return nil
 }
 

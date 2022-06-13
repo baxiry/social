@@ -16,18 +16,13 @@ function creatInput(id) {
 
     let elmInput = $("#"+id);
     elmInput.innerHTML = inputForm(id);//'<input type="text" placeholder='+id+' id='+id+' autofocus>'
-    //elmInput.innerHTML += '<button class="btn btn-outline-primary" oncklic="putData('+id+') " name=update >update</button>'
+    //elmInput.innerHTML += '<button class="btn btn-outline-primary"  name=update >update</button>'
 }
 
 // $ my awsome javascript framework
 function $(element) {
     return document.querySelector(element)
 }
-
-function selectFiles() {
-    
-}
-
 
 
 function inputForm(id) {
@@ -38,22 +33,23 @@ function inputForm(id) {
             <input class="form-control form-control-sm" id="formFileSm" type="file">
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-3">update</button>
+            <button type="" class="btn btn-primary mb-3">update</button>
         </div>
    </form>
     `
     }
     return `
-    <form class="row g-3">
+    <div class="row g-3">
         <div class="col-auto">
             <input type="text" class="form-control" id="${id}" placeholder="${id}">
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-3">update</button>
+            <button type="" class="btn btn-primary mb-3" oncklic="console.log('hello frinds')">update</button>
         </div>
-    </form>
+    </div>
     `
 /*    return `
+ *putData(${id})
  <form>
   <input type="text" id="${id}" name="${id}" placeholder="${id}" autofocus >
   <input type="submit" name="update" >

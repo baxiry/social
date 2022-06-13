@@ -1,31 +1,34 @@
 {{template "header.html" .}}
 <body>
+<div class=container>
+    <h1>profile up</h1>
+    <form action="/upacount" method="post" enctype="multipart/form-data">
+        <p>usename:{{.user.Username}}</p>
+        <p>Profile Up</p>
 
-<div class='container'>
-    <h3>update acount information </h3>
-    <h2>{{.username}}</h2>    
-
-    <div style="height: 300px; background-color: rgba(255,0,0,0.1);">
-
-        <img src="/fs/{{.user.Photos}}" class="h-100 d-inline-block"><br>
-
-    </div>
-
-        <div id="photos" class="p-1 h-auto d-inline-block" >
-        Photos    {{.user.Photos}}
-            <button name=username  value={{.user.Photos}}  onclick="creatInput('photos')"> update </button> 
-        </div> <br>
-
-        <div id="username" class="p-1 h-auto d-inline-block" >
-        username is :    {{.username}}
-            <button name=username  value='{{.user.Username}}'  onclick="creatInput('username')"> update </button> 
-        </div> <br>
-
-        <div id="email", class="p-1 h-auto d-inline-block" >
-            email is: {{.email}}
-            <button name=email value={{.user.Email}}  onclick="creatInput('email')" > update </button> 
-        </div>
+        <input type="text" name=title placeholder="title" value={{.product.Title}}><br><br>
+        <p:>catigory: </p>
+        <select name="catigory">
+            {{$catig := .product.Catigory}}
+            <option value="computers"{{if eq $catig "computers"}} selected {{end}}>computers</option> 
+            <option value="mobiles"  {{if eq $catig "mobiles"}} selected {{end}}>mobiles</option>
+            <option value="motors"   {{if eq $catig "motors"}} selected {{end}}>motors</option>
+            <option value="animals"  {{if eq $catig "animals"}} selected {{end}}>animals</option>
+            <option value="cars"     {{if eq $catig "cars"}} selected {{end}}>cars</option>
+            <option value="services" {{if eq $catig "services"}} selected {{end}}>services</option>
+            <option value="others"   {{if eq $catig "others"}} selected {{end}}>others</option>
+        </select><br><br>
+    
+        <p>Ditails:</p>
+        <textarea name="description" title="write all details" placeholder="description" >{{.product.Description}}</textarea><br><br>
+        <p>Price:</p>
+        <input type="number" name=price placeholder="price" value='{{.product.Price}}'><br><br>
+        <input type="submit" value="Submit">
+    </form>
 </div>
-<script type="text/javascript" src="/assets/app.js"></script>
+<div class=footer> footer  copyryght 2020 </div>
+<script>
+// onkeyup="this.value.length == 200 ? alert('stop') : null;" 
+</script>
 </body>
 </html>

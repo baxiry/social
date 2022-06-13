@@ -40,7 +40,7 @@ func login(c echo.Context) error {
 	fpass := c.FormValue("password")
 	userid, username, pass := selectUser(femail)
 
-	if pass == fpass {
+	if pass == fpass && pass != "" {
 		//userSession[email] = name
 		NewSession(c, username, userid)
 		return c.Redirect(http.StatusSeeOther, "/") // 303 code

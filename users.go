@@ -92,7 +92,7 @@ func updateUserInfo(field string, userid int) error {
 }
 
 // updateAcount updates Acount information
-func updateAcountPage(c echo.Context) error {
+func UpdateInfo(c echo.Context) error {
 	//data := make(map[string]interface{},1)
 	sess, _ := session.Get("session", c)
 	uid := sess.Values["userid"]
@@ -100,7 +100,7 @@ func updateAcountPage(c echo.Context) error {
 		// login first
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
-
+	fmt.Println("we are on update user info post")
 	name := c.FormValue("name")
 
 	err := updateUserInfo(name, uid.(int))

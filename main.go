@@ -32,7 +32,7 @@ func main() {
 	e.GET("/upacount", UpdateProfile)
 	e.GET("/fotos", PhotosPage)
 	e.POST("/upfotos", UpPhotos)
-	//e.POST("/upacount", UpdateAcountInfo)
+	e.POST("/upacount", UpdateInfo)
 
 	e.GET("/messages", MessagesPage) //reacent
 	e.GET("/activity", Activity)     //reacent

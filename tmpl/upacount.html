@@ -1,28 +1,34 @@
 {{template "header.html" .}}
 <body>
 <div class=container>
-    <h1>profile up</h1>
     <form action="/upacount" method="post" enctype="multipart/form-data">
-        <p>usename:{{.user.Username}}</p>
         <p>Profile Up</p>
 
-        <input type="text" name=title placeholder="title" value={{.product.Title}}><br><br>
-        <p:>catigory: </p>
-        <select name="catigory">
-            {{$catig := .product.Catigory}}
-            <option value="computers"{{if eq $catig "computers"}} selected {{end}}>computers</option> 
-            <option value="mobiles"  {{if eq $catig "mobiles"}} selected {{end}}>mobiles</option>
-            <option value="motors"   {{if eq $catig "motors"}} selected {{end}}>motors</option>
-            <option value="animals"  {{if eq $catig "animals"}} selected {{end}}>animals</option>
-            <option value="cars"     {{if eq $catig "cars"}} selected {{end}}>cars</option>
-            <option value="services" {{if eq $catig "services"}} selected {{end}}>services</option>
-            <option value="others"   {{if eq $catig "others"}} selected {{end}}>others</option>
-        </select><br><br>
-    
-        <p>Ditails:</p>
-        <textarea name="description" title="write all details" placeholder="description" >{{.product.Description}}</textarea><br><br>
-        <p>Price:</p>
-        <input type="number" name=price placeholder="price" value='{{.product.Price}}'><br><br>
+        username: 
+        <input type="text" name=username placeholder="username" value='{{.user.Username}}'><br><br>
+        age :
+        <input type="number" name=age placeholder="age" value='{{.user.Age}}'><br><br>
+        
+        profess:
+        <input type="text" name=job placeholder="profess" value='{{.user.Profess}}'><br><br>
+        
+        Ditails:
+        <textarea name="descript" title="write all details" placeholder="description" >{{.user.Descript}}</textarea><br><br>
+        
+        contry:
+        <select name="contry">
+            {{$contry := .user.Contry}}
+            <option value="usa"      {{if eq $contry "usa"}} selected {{end}}>usa</option> 
+            <option value="england"  {{if eq $contry "england"}} selected {{end}}>englend</option>
+            <option value="eropa"    {{if eq $contry "eropa"}} selected {{end}}>eropa</option>
+            <option value="arabia"   {{if eq $contry "arabia"}} selected {{end}}>arabia</option>
+            <option value="endia"    {{if eq $contry "endia"}} selected {{end}}>india</option>
+            <option value="china"    {{if eq $contry "china"}} selected {{end}}>chaina</option>
+            <option value="malawi"   {{if eq $contry "malawi"}} selected {{end}}>malawi</option>
+        </select> <br><br>
+
+        age:
+        <input type="text" name=job placeholder="job" value='{{.user.Profess}}'><br><br>
         <input type="submit" value="Submit">
     </form>
 </div>

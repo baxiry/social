@@ -9,6 +9,20 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type User struct {
+	UserId   int
+	Username string
+	Password string
+	Email    string
+	Gender   string
+	Age      int
+	Lang     string
+	Profess  string
+	Contry   string
+	Descript string
+	Photos   string
+}
+
 func Profile(c echo.Context) error {
 	username, userid, err := GetSession(c)
 	if err != nil {
@@ -31,9 +45,8 @@ func Profile(c echo.Context) error {
 	return nil
 }
 
-// updateAcount updates Acount information
+// updatePage update Page info
 func UpdatePage(c echo.Context) error {
-	fmt.Println("update account")
 
 	username, userid, err := GetSession(c)
 	if err != nil {
@@ -54,7 +67,7 @@ func UpdatePage(c echo.Context) error {
 	return nil
 }
 
-// updateAcount updates Acount information
+// update updates Acount information
 func Update(c echo.Context) error {
 	fmt.Println("update account")
 
@@ -80,8 +93,10 @@ func Update(c echo.Context) error {
 // getUserIfor from db
 func getUserInfo(userid int) (user User) {
 	err := db.QueryRow(
-		"SELECT username, email, photos FROM social.users WHERE userid = ?",
-		userid).Scan(&user.Username, &user.Email, &user.Photos)
+		"SELECT username, email, age, profiss, photos FROM social.users WHERE userid = ?",
+		userid).Scan(&user.Username, &user.Email, &user.Profess, &user.Age, &user.Photos)
+
+	fmt.Printf("%#v\n", user)
 
 	if err != nil {
 		fmt.Println("no result or", err.Error())
@@ -100,17 +115,10 @@ func updateUserInfo(field string, userid int) error {
 	defer stmt.Close()
 
 	// execute
-	res, err := stmt.Exec(field, userid)
+	_, err = stmt.Exec(field, userid) // ignore affected _
 	if err != nil {
 		return err
 	}
-
-	a, err := res.RowsAffected()
-	if err != nil {
-		return err
-	}
-
-	fmt.Println("efected foto update: ", a) // 1
 	return nil
 }
 

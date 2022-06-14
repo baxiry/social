@@ -8,16 +8,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type User struct {
-	UserId       int
-	Username     string
-	Password     string
-	Email        string
-	Gender       string
-	Photos       string
-	NemberPhotos int
-}
-
 func homePage(c echo.Context) error {
 
 	sess, _ := session.Get("session", c)

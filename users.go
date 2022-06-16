@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
@@ -27,9 +26,7 @@ func Profile(c echo.Context) error {
 	username, userid, err := GetSession(c)
 	if err != nil {
 		//println(c.Redirect(http.StatusSeeOther, "/login"))
-		fmt.Println("error of upacount handler is ", err)
-		//return nil
-
+		fmt.Println("no session", err)
 	}
 
 	id, _ := strconv.Atoi(c.Param("id"))
@@ -37,6 +34,9 @@ func Profile(c echo.Context) error {
 	data := make(map[string]interface{}, 1)
 	data["user"] = getUserInfo(id)
 
+	if id == userid {
+		data["owner"] = "ok"
+	}
 	// for session
 	data["userid"] = userid
 	data["username"] = username
@@ -71,30 +71,32 @@ func UpdatePage(c echo.Context) error {
 func Update(c echo.Context) error {
 	fmt.Println("update account")
 
-	username, userid, err := GetSession(c)
+	_, userid, err := GetSession(c)
 	if err != nil {
 		println(c.Redirect(http.StatusSeeOther, "/login"))
-		fmt.Println("error of upacount handler is ", err)
 		return nil
 	}
 
-	data := make(map[string]interface{}, 1)
+	stmt, err := db.Prepare(
+		`update social.users set username=?, age=?, profess=?, descript=?,contry =? where userid = ?`)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
 
-	data["username"] = username
-	data["userid"] = userid
-	data["user"] = getUserInfo(userid)
+	// execute
+	stmt.Exec(c.FormValue("username"), c.FormValue("age"), c.FormValue("profess"),
+		c.FormValue("descript"), c.FormValue("contry"), userid)
 
-	fmt.Println(data)
-
-	fmt.Println(c.Render(200, "user.html", data))
+	fmt.Println(c.Redirect(http.StatusSeeOther, "/user/"+strconv.Itoa(userid)))
 	return nil
 }
 
 // getUserIfor from db
 func getUserInfo(userid int) (user User) {
 	err := db.QueryRow(
-		"SELECT username, email, age, profiss, photos FROM social.users WHERE userid = ?",
-		userid).Scan(&user.Username, &user.Email, &user.Profess, &user.Age, &user.Photos)
+		"SELECT username, email, age, profess, contry, descript, photos FROM social.users WHERE userid = ?",
+		userid).Scan(&user.Username, &user.Email, &user.Age, &user.Profess, &user.Contry, &user.Descript, &user.Photos)
 
 	fmt.Printf("%#v\n", user)
 
@@ -122,6 +124,8 @@ func updateUserInfo(field string, userid int) error {
 	return nil
 }
 
+/*
+
 // updateAcount updates Acount information
 func UpdateInfo(c echo.Context) error {
 	//data := make(map[string]interface{},1)
@@ -146,3 +150,4 @@ func UpdateInfo(c echo.Context) error {
 	userid := strconv.Itoa(uid.(int))
 	return c.Redirect(303, "/acount/"+userid)
 }
+*/

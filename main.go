@@ -29,14 +29,14 @@ func main() {
 	e.GET("/login", loginPage)
 	e.POST("/login", login)
 	e.GET("/user/:id", Profile)
-	e.GET("/upacount", UpdatePage)
 	e.GET("/fotos", PhotosPage)
 	e.POST("/upfotos", UpPhotos)
+	e.GET("/upacount", UpdatePage)
 	e.POST("/upacount", Update)
 
-	e.GET("/messages", MessagesPage) //reacent
-	e.GET("/activity", Activity)     //reacent
-	e.GET("/search", Search)         //reacent
+	e.GET("/messages", MessagesPage)
+	e.GET("/activity", Activity)
+	e.GET("/search", Search)
 
 	//e.POST("/updatefotos/:id", updateProdFotos)
 

@@ -5,6 +5,7 @@
 
 
 <div class="p-2 m-2 border border-2">
+    user page
 
     <div  style="background-color: rgba(200, 200, 200, 200);">
         {{if eq .user.Photos "" }}
@@ -16,6 +17,7 @@
         <h3 class=name>username {{.user.Username}}</h3>
         <h3 class=name>email {{.user.Email}}  </h3>
         <h3 class=name>photo {{.user.Photos}} </h3>
+        <h3 class=name>about me {{.user.Descript}} </h3>
 
     </div>
     

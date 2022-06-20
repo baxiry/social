@@ -15,6 +15,8 @@ type User struct {
 	Email    string
 	Gender   string
 	Age      int
+	Height   int
+	Weight   int
 	Lang     string
 	Profess  string
 	Contry   string
@@ -96,6 +98,7 @@ func Update(c echo.Context) error {
 func getUserInfo(userid int) (user User) {
 	err := db.QueryRow(
 		"SELECT username, email, age, profess, contry, descript, photos FROM social.users WHERE userid = ?",
+		//"SELECT * FROM social.users WHERE userid = ?",
 		userid).Scan(&user.Username, &user.Email, &user.Age, &user.Profess, &user.Contry, &user.Descript, &user.Photos)
 
 	fmt.Printf("%#v\n", user)

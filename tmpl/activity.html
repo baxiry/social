@@ -23,37 +23,6 @@
             <input type="submit">
         </form>
 
-    
-        <h1>My Products</h1>    
-    
-        <h2>{{.username}}</h2>    
-
-    
-    {{if not .products }} you dont have any product yet {{end}}
-
-    {{range .products}}
-
-    <div class="m-5">
-    <div id="id{{.ProductId}}" class=card>
-
-    <div class="m-5">
-        <h5>{{.Catigory}}</h5>
-        <h5>{{.Title}}</h5>
-        <h5>{{.Photo}}</h5>
-        <h5>{{.Price}}</h5>
-        <h5>{{.Description}}</h5>
-
-        <div dir=rtl>
-            <button onclick=deleteProd({{.ProductId}})> Delete </button>
-            <button onclick=editeProd({{.ProductId}})> Edit </button>
-            <button onclick=editeFotos({{.ProductId}})> Edit Photos </button>
-        </div>
-    </div>
-    </div>
-    </div>
-    {{end}}
-
-
     </div>
 </body>
 </html>

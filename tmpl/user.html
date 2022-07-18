@@ -3,24 +3,34 @@
 <body>
 <div class='container'>
 
+<div class="row">
 
-<div class="p-2 m-2 border border-2">
+
+<div class="col p-2 m-2 border border-2">
     user page
 
     <div  style="background-color: rgba(200, 200, 200, 200);">
         {{if eq .user.Photos "" }}
             <h1> no photo </h1>  
         {{else}}
-        <img src="/fs/{{.user.Photos}}" class="col-5 h-100 d-inline-block" ><br>
+        <img src="/fs/{{.user.Photos}}" class="col-5 h-100 d-inline-block" >
         {{end}}
 
-        <h3 class=name>username {{.user.Username}}</h3>
-        <h3 class=name>email {{.user.Email}}  </h3>
-        <h3 class=name>photo {{.user.Photos}} </h3>
-        <h3 class=name>about me {{.user.Descript}} </h3>
-
     </div>
-    
+</div>
+
+
+
+   <div class="col container">
+
+
+        <h3 class="end">username {{.user.Username}}</h3>
+        <h3 class="end">email {{.user.Email}}  </h3>
+        <h3 class=name>age {{.user.Age}} </h3>
+        <h3 class=name>about me {{.user.Descript}} </h3>
+  </div>
+</div>
+
 </div>
 </div>
 

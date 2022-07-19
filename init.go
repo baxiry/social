@@ -22,6 +22,24 @@ var (
 	db        *sql.DB
 )
 
+func createTable(dbName, tableName string, db *sql.DB) {
+	//CREATE DATABASE ;
+	//tbname := dbName + "." + tableName   // ` + tbname + `
+	_, err := db.Exec(`
+	CREATE TABLE IF NOT EXISTS social.users  (
+    userid int unsigned NOT NULL AUTO_INCREMENT,
+    username varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
+    email varchar(255) UNIQUE NOT NULL,
+    photos text NOT NULL DEFAULT "",
+    number_photos int NOT NULL DEFAULT 0,
+    PRIMARY KEY (userid)
+	);`)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func createDB(dbName string, db *sql.DB) {
 	//CREATE DATABASE ;
 	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS " + dbName)
@@ -58,6 +76,8 @@ func setdb() *sql.DB {
 	return db
 }
 
+// init templates
+
 type Template struct {
 	templates *template.Template
 }
@@ -90,7 +110,7 @@ func photoFold() string {
 	return "../files/"
 }
 
-// where assets  path ?
+// where is assets  path ?
 func assets() string {
 	home, err := os.Getwd()
 	if err != nil {
@@ -103,23 +123,7 @@ func assets() string {
 	return "assets"
 }
 
-func createTable(dbName, tableName string, db *sql.DB) {
-	//CREATE DATABASE ;
-	//tbname := dbName + "." + tableName   // ` + tbname + `
-	_, err := db.Exec(`
-	CREATE TABLE IF NOT EXISTS social.users  (
-    userid int unsigned NOT NULL AUTO_INCREMENT,
-    username varchar(255) NOT NULL,
-    password varchar(255) NOT NULL,
-    email varchar(255) UNIQUE NOT NULL,
-    photos text NOT NULL DEFAULT "",
-    number_photos int NOT NULL DEFAULT 0,
-    PRIMARY KEY (userid)
-	);`)
-	if err != nil {
-		panic(err)
-	}
-}
+// Helpers functions
 
 // GetSession return username & userid as session's user
 func GetSession(c echo.Context) (string, int, error) {
@@ -136,7 +140,7 @@ func NewSession(c echo.Context, username string, userid int) {
 	sess, _ := session.Get("session", c)
 	sess.Options = &sessions.Options{
 		Path:     "/",
-		MaxAge:   60 * 60, // = 1h,
+		MaxAge:   60 * 10, // 10 minutes of session,
 		HttpOnly: true,    // no websocket or any thing else
 	}
 	sess.Values["username"] = username

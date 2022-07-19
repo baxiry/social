@@ -36,13 +36,13 @@
               {{if eq .username ""}}Profile{{else}}{{.username}}{{end}}
             </a>
         {{else}}
-            <a class="btn btn-outline-success m-1 btn-sm" href="/login">Login</a>
             <a class="btn btn-outline-success m-1 btn-sm" href="/sign">Signup</a>
+            <a class="btn btn-outline-success m-1 btn-sm" href="/login">Login</a>
         {{end}}
 
-        {{if .owner }} 
+      {{if .owner }} 
             <a class="btn btn-outline-success m-1 btn-sm" href="/upacount" >setting</a>
-        {{end}}
+      {{end}}
 
   </div>
   </div>

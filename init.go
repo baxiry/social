@@ -73,6 +73,7 @@ func templ() *Template {
 	//	p = "/root/store/"
 	//}
 	files := []string{
+		p + "tmpl/home.html", p + "tmpl/sign.html", p + "tmpl/login.html",
 		p + "tmpl/upfotos.html", p + "tmpl/search.html", p + "tmpl/user.html",
 		p + "tmpl/upload.html", p + "tmpl/upacount.html", p + "tmpl/messages.html",
 		p + "tmpl/part/header.html", p + "tmpl/part/footer.html", p + "tmpl/activity.html",

@@ -65,10 +65,10 @@ func selectUser(femail string) (int, string, string) {
 }
 
 func signPage(c echo.Context) error {
-	return c.Render(200, "sign.html", "hello")
+	return c.Render(200, "sign.html", "")
 }
 
 func loginPage(c echo.Context) error {
-	fmt.Println(c.Render(200, "login.html", "hello"))
+	fmt.Println(c.Render(200, "login.html", ""))
 	return nil
 }

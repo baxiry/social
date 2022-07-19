@@ -19,7 +19,7 @@ type User struct {
 	Weight   int
 	Lang     string
 	Profess  string
-	Contry   string
+	Country  string
 	Descript string
 	Photos   string
 }
@@ -97,14 +97,15 @@ func Update(c echo.Context) error {
 // getUserIfor from db
 func getUserInfo(userid int) (user User) {
 	err := db.QueryRow(
-		"SELECT username, email, age, profess, contry, descript, photos FROM social.users WHERE userid = ?",
+		"SELECT username, gender, email, age, profess, contry, descript, photos FROM social.users WHERE userid = ?",
 		//"SELECT * FROM social.users WHERE userid = ?",
-		userid).Scan(&user.Username, &user.Email, &user.Age, &user.Profess, &user.Contry, &user.Descript, &user.Photos)
+		userid).Scan(&user.Username, &user.Gender, &user.Email, &user.Age, &user.Profess, &user.Country, &user.Descript, &user.Photos)
 
-	fmt.Printf("%#v\n", user)
+	//fmt.Printf("User is : %#v\n", user)
 
 	if err != nil {
 		fmt.Println("no result or", err.Error())
+		return // ?
 	}
 	return user
 }

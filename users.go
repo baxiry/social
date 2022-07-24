@@ -19,7 +19,7 @@ type User struct {
 	Weight   int
 	Lang     string
 	Profess  string
-	Country  string
+	Contry   string
 	Descript string
 	Photos   string
 }
@@ -99,7 +99,7 @@ func getUserInfo(userid int) (user User) {
 	err := db.QueryRow(
 		"SELECT username, gender, email, age, profess, contry, descript, photos FROM social.users WHERE userid = ?",
 		//"SELECT * FROM social.users WHERE userid = ?",
-		userid).Scan(&user.Username, &user.Gender, &user.Email, &user.Age, &user.Profess, &user.Country, &user.Descript, &user.Photos)
+		userid).Scan(&user.Username, &user.Gender, &user.Email, &user.Age, &user.Profess, &user.Contry, &user.Descript, &user.Photos)
 
 	//fmt.Printf("User is : %#v\n", user)
 

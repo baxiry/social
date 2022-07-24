@@ -107,7 +107,7 @@ func photoFold() string {
 	//if os.Getenv("USERNAME") == "fedor" {
 	//	return "/home/fedor/repo/files/"
 	//}
-	return "../files/"
+	return "../files"
 }
 
 // where is assets  path ?

@@ -11,8 +11,20 @@ import (
 func signup(c echo.Context) error {
 	email := c.FormValue("email")
 	pass := c.FormValue("password")
-	fmt.Println(email, pass)
-	err := insertUser(email, pass)
+	m := c.FormValue("man")
+	f := c.FormValue("femane")
+
+	gender := ""
+	if m == "on" {
+		gender = "m"
+	}
+	if f == "on" {
+		gender = "f"
+	}
+
+	fmt.Println(email, pass, "gender is : ", gender)
+
+	err := insertUser(email, pass, gender)
 	if err != nil {
 		fmt.Println(err)
 		return c.Render(200, "sign.html", err.Error())
@@ -21,17 +33,17 @@ func signup(c echo.Context) error {
 }
 
 // insertUser register new user in db
-func insertUser(email, pass string) error {
+func insertUser(email, pass, gender string) error {
 	insert, err := db.Query(
-		"INSERT INTO social.users(email, password) VALUES ( ?, ?)",
-		email, pass)
+		"INSERT INTO social.users(email, password, gender) VALUES ( ?, ?, ?)",
+		email, pass, gender)
 
 	// if there is an error inserting, handle it
 	if err != nil {
 		return err
 	}
 	// be careful deferring Queries if you are using transactions
-	defer insert.Close()
+	insert.Close()
 	return nil
 }
 

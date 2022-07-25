@@ -5,23 +5,45 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/blockloop/scan"
 	"github.com/labstack/echo/v4"
 )
 
 type User struct {
-	UserId   int
-	Username string
-	Password string
-	Email    string
-	Gender   string
-	Age      int
-	Height   int
-	Weight   int
-	Lang     string
-	Profess  string
-	Contry   string
-	Descript string
-	Photos   string
+	UserId   int    `db:"userid"`
+	Username string `sql:"username"`
+	Password string `db:"password"`
+	Email    string `db:"email"`
+	Gender   string `db:"dender"`
+	Age      int    `db:"age"`
+	Height   int    `db:"height"`
+	Weight   int    `db:"weight"`
+	Lang     string `db:"lang"`
+	Profess  string `db:"profess"`
+	Contry   string `db:"contry"`
+	Descript string `db:"descript"`
+	Photos   string `db:"photo"`
+}
+
+// getUserIfor from db
+func getUserInfo(userid int) (user User) {
+
+	rows, err := db.Query("SELECT * FROM social.users WHERE userid = ?", userid)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	defer rows.Close()
+
+	err = scan.Row(&user, rows)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	return user
 }
 
 func Profile(c echo.Context) error {
@@ -92,22 +114,6 @@ func Update(c echo.Context) error {
 
 	fmt.Println(c.Redirect(http.StatusSeeOther, "/user/"+strconv.Itoa(userid)))
 	return nil
-}
-
-// getUserIfor from db
-func getUserInfo(userid int) (user User) {
-	err := db.QueryRow(
-		"SELECT username, gender, email, age, profess, contry, descript, photos FROM social.users WHERE userid = ?",
-		//"SELECT * FROM social.users WHERE userid = ?",
-		userid).Scan(&user.Username, &user.Gender, &user.Email, &user.Age, &user.Profess, &user.Contry, &user.Descript, &user.Photos)
-
-	//fmt.Printf("User is : %#v\n", user)
-
-	if err != nil {
-		fmt.Println("no result or", err.Error())
-		return // ?
-	}
-	return user
 }
 
 // update user info in db

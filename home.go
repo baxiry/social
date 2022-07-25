@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/blockloop/scan"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
@@ -29,22 +30,13 @@ func homePage(c echo.Context) error {
 
 //getCatigories get all photo name of catigories.
 func getRecentUsers() (users []User) {
-	res, err := db.Query(
-		"SELECT userid, username, email, photos from social.users;")
-	if err != nil {
-		fmt.Println("getResentUsers error : ", err)
-	}
-	defer res.Close()
+	rows, err := db.Query("SELECT userid, username, email, photos from social.users;")
+	CheckErr("getResentUsers error : ", err)
+	defer rows.Close()
 
-	var u User
-	for res.Next() {
-		res.Scan(&u.UserId, &u.Username, &u.Email, &u.Photos)
-		users = append(users, u)
-	}
+	err = scan.Rows(&users, rows)
+	CheckErr("", err)
 
-	for _, u := range users {
-		fmt.Println(u)
-	}
 	return users
 }
 

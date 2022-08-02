@@ -16,8 +16,9 @@ func PhotosPage(c echo.Context) error {
 
 	username, userid, err := GetSession(c)
 	if err != nil {
-		fmt.Println("session name is nil redirect to login")
-		c.Redirect(303, "/login")
+		fmt.Println("session name is nil redirect to login", http.StatusSeeOther)
+		c.Redirect(http.StatusSeeOther, "/login") // 303 code
+		return nil
 	}
 
 	data := make(map[string]interface{}, 3)
@@ -32,17 +33,17 @@ func PhotosPage(c echo.Context) error {
 }
 
 // update fotos name in database
-func UpdatePhotos(photos string, productId int) error {
+func UpdatePhotos(photos string, userid int) error {
 
 	//Update db
-	stmt, err := db.Prepare("update  stores.products set photos=? where productId=?")
+	stmt, err := db.Prepare("update  social.users set photos=? where userid=?")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 
 	// execute
-	_, err = stmt.Exec(photos, productId)
+	_, err = stmt.Exec(photos, userid)
 	if err != nil {
 		return err
 	}

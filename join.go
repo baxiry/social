@@ -8,7 +8,7 @@ import (
 )
 
 // signup sing up new user handler
-func signup(c echo.Context) error {
+func Signup(c echo.Context) error {
 	email := c.FormValue("email")
 	pass := c.FormValue("password")
 	m := c.FormValue("man")
@@ -47,7 +47,7 @@ func insertUser(email, pass, gender string) error {
 	return nil
 }
 
-func login(c echo.Context) error {
+func Login(c echo.Context) error {
 	femail := c.FormValue("email")
 	fpass := c.FormValue("password")
 	userid, username, pass := selectUser(femail)
@@ -76,11 +76,11 @@ func selectUser(femail string) (int, string, string) {
 	return userid, username, password
 }
 
-func signPage(c echo.Context) error {
+func SignPage(c echo.Context) error {
 	return c.Render(200, "sign.html", "")
 }
 
-func loginPage(c echo.Context) error {
+func LoginPage(c echo.Context) error {
 	fmt.Println(c.Render(200, "login.html", ""))
 	return nil
 }

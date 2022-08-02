@@ -24,10 +24,10 @@ func main() {
 
 	// account and verefy
 	e.GET("/", homePage)
-	e.GET("/sign", signPage)
-	e.POST("/sign", signup)
-	e.GET("/login", loginPage)
-	e.POST("/login", login)
+	e.GET("/sign", SignPage)
+	e.POST("/sign", Signup)
+	e.GET("/login", LoginPage)
+	e.POST("/login", Login)
 	e.GET("/user/:id", Profile)
 	e.GET("/fotos", PhotosPage)
 	e.POST("/upfotos", UpPhotos)

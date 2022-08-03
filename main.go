@@ -30,7 +30,7 @@ func main() {
 	e.POST("/login", Login)
 	e.GET("/user/:id", Profile)
 	e.GET("/fotos", PhotosPage)
-	e.POST("/upfotos", UpPhotos)
+	e.POST("/upfotos/:id", UpPhotos)
 	e.GET("/upacount", UpdatePage)
 	e.POST("/upacount", Update)
 

@@ -12,6 +12,7 @@
     <div  style="background-color: rgba(200, 200, 200, 200);">
         {{if eq .user.Photos "" }}
             <h1> no photo </h1>  
+        <a href="/fotos">upload photo</a>
         {{else}}
         <img src="/fs/{{.user.Photos}}" class="col-5 h-100 d-inline-block" >
         {{end}}

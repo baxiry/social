@@ -26,28 +26,12 @@ func PhotosPage(c echo.Context) error {
 	data["photos"] = photos
 	data["username"] = username
 
+	fmt.Println("photo page. user id is ", userid)
+	data["userid"] = userid
+
 	fmt.Println("fotos is : ", data)
 
 	fmt.Println(c.Render(http.StatusOK, "upfotos.html", data))
-	return nil
-}
-
-// update fotos name in database
-func UpdatePhotos(photos string, userid int) error {
-
-	//Update db
-	stmt, err := db.Prepare("update  social.users set photos=? where userid=?")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	// execute
-	_, err = stmt.Exec(photos, userid)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -55,9 +39,11 @@ func UpdatePhotos(photos string, userid int) error {
 func UpPhotos(c echo.Context) error {
 
 	pid := c.Param("id")
+	fmt.Println("param id is", pid)
 	id, err := strconv.Atoi(pid)
 	if err != nil {
 		fmt.Println("id error", err)
+		return err
 	}
 
 	// from her :
@@ -104,10 +90,29 @@ func UpPhotos(c echo.Context) error {
 		}
 	}
 
-	err = c.Redirect(http.StatusSeeOther, "/mystore")
+	err = c.Redirect(http.StatusSeeOther, "/user/"+pid)
 	if err != nil {
 		fmt.Println("\nerr when update product photo", err)
 	}
+	return nil
+}
+
+// update fotos name in database
+func UpdatePhotos(photos string, userid int) error {
+
+	//Update db
+	stmt, err := db.Prepare("update  social.users set photos=? where userid=?")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	// execute
+	_, err = stmt.Exec(photos, userid)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

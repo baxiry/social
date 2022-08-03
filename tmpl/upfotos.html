@@ -1,11 +1,11 @@
 {{template "header.html" .}}
 <body>
-<div class=center>
+<div>
    <br>
    <br>
 
-   <h1>product id : 8</h1>
-   <form action="/upfotos" method="post" enctype="multipart/form-data">
+   <h1>user id :  {{ .userid }}</h1>
+   <form action="/upfotos/{{.userid}}" method="post" enctype="multipart/form-data">
       <p>photos:</p> <input type="file" name="files" multiple><br><br>
       <input type="submit" value="Submit">
    </form>

@@ -3,6 +3,7 @@ module store
 go 1.18
 
 require (
+	github.com/blockloop/scan v1.3.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gorilla/sessions v1.2.1
 	github.com/labstack/echo-contrib v0.12.0
@@ -10,7 +11,6 @@ require (
 )
 
 require (
-	github.com/blockloop/scan v1.3.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect

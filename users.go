@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/blockloop/scan"
 	"github.com/labstack/echo/v4"
@@ -42,6 +43,8 @@ func getUserInfo(userid int) (user User) {
 		fmt.Println(err.Error())
 		return
 	}
+	photo := strings.Split(user.Photos, "; ")
+	user.Photos = photo[0]
 
 	return user
 }

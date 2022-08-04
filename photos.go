@@ -22,7 +22,7 @@ func PhotosPage(c echo.Context) error {
 	}
 
 	data := make(map[string]interface{}, 3)
-	photos, err := getProductFotos(userid)
+	photos := getUserFotos(userid)
 	data["photos"] = photos
 	data["username"] = username
 
@@ -57,7 +57,7 @@ func UpPhotos(c echo.Context) error {
 	picts := ""
 	for _, v := range files {
 		picts += v.Filename
-		picts += "];["
+		picts += "; "
 		// TODO Rename pictures.
 	}
 
@@ -117,26 +117,25 @@ func UpdatePhotos(photos string, userid int) error {
 }
 
 // selecte fotos from db
-func getProductFotos(productId int) ([]string, error) {
+func getUserFotos(userid int) (photos []string) {
 	var picts string
 	err := db.QueryRow(
-		"SELECT photos FROM stores.products WHERE productId = ?",
-		productId).Scan(&picts)
+		"SELECT photos FROM social.users WHERE userid = ?",
+		userid).Scan(&picts)
 	if err != nil {
-		return nil, err
+		return nil
 	}
-	list := strings.Split(picts, "];[")
+	list := strings.Split(picts, "; ")
 	// TODO split return 2 item in some casess, is this a bug ?
-	fotos := filter(list)
-	return fotos, nil
+	photos = filter(list)
+	return photos
 }
 
 // some tools
-func filter(slc []string) []string {
-	res := make([]string, 0)
+func filter(slc []string) (res []string) {
 	for _, v := range slc {
 		if v != "" {
-			res = append(res, v) // TODO this need improve fo performence
+			res = append(res, v)
 		}
 	}
 	return res

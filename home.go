@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/blockloop/scan"
 	"github.com/labstack/echo-contrib/session"
@@ -20,9 +21,14 @@ func homePage(c echo.Context) error {
 	data["username"] = username
 	data["userid"] = userid
 	users := getRecentUsers()
-	for _, u := range users {
-		fmt.Println(u.UserId)
+
+	for k := range users {
+		photos := strings.Split(users[k].Photos, "; ")
+		users[k].Photos = photos[0]
 	}
+
+	fmt.Println("photo is : ", users)
+
 	data["users"] = users
 	fmt.Println(c.Render(http.StatusOK, "home.html", data))
 	return nil

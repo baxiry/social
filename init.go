@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -87,19 +88,36 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 
+var listFiles []string
+
 // path file is depends to enveronment.
 func templ() *Template {
-	var p string
-	//if os.Getenv("USERNAME") != "fedor" {
-	//	p = "/root/store/"
-	//}
-	files := []string{
-		p + "tmpl/home.html", p + "tmpl/sign.html", p + "tmpl/login.html",
-		p + "tmpl/upfotos.html", p + "tmpl/search.html", p + "tmpl/user.html",
-		p + "tmpl/upload.html", p + "tmpl/upacount.html", p + "tmpl/messages.html",
-		p + "tmpl/part/header.html", p + "tmpl/part/footer.html", p + "tmpl/activity.html",
+
+	path := "./tmpl"
+	err := filepath.Walk(path, doF)
+
+	if err != nil {
+		fmt.Printf("error walking the path %q: %v\n", path, err)
 	}
-	return &Template{templates: template.Must(template.ParseFiles(files...))}
+
+	return &Template{templates: template.Must(template.ParseFiles(listFiles...))}
+}
+
+var doF = func(xpath string, xinfo os.FileInfo, xerr error) error {
+
+	// first thing to do, check error. and decide what to do about it
+	if xerr != nil {
+		fmt.Printf("error [%v] at a path [%q]\n", xerr, xpath)
+		return xerr
+	}
+
+	// find out if it's a dir or file, if file, print info
+	if xinfo.IsDir() {
+		fmt.Printf("is dir.\n")
+	} else {
+		listFiles = append(listFiles, fmt.Sprintf("%s/%s", filepath.Dir(xpath), xinfo.Name()))
+	}
+	return xerr
 }
 
 // folder when photos is stored.

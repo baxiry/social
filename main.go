@@ -13,7 +13,6 @@ func main() {
 
 	e := echo.New()
 
-	// TODO store secret key in envrenment
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
 	e.Renderer = templ()
@@ -43,4 +42,5 @@ func main() {
 	//e.GET("/:catigory/:id", getOneProd) // whech is beter ? :catigory or /product ?
 
 	e.Logger.Fatal(e.Start(":8080"))
+
 }

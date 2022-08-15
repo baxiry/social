@@ -28,7 +28,7 @@ func createTable(dbName, tableName string, db *sql.DB) {
 	//CREATE DATABASE ;
 	//tbname := dbName + "." + tableName   // ` + tbname + `
 	_, err := db.Exec(`
-	CREATE TABLE IF NOT EXISTS social.users  (
+CREATE TABLE IF NOT EXISTS social.users  (
     userid int unsigned NOT NULL AUTO_INCREMENT,
     username varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
@@ -36,7 +36,7 @@ func createTable(dbName, tableName string, db *sql.DB) {
     photos text NOT NULL DEFAULT "",
     number_photos int NOT NULL DEFAULT 0,
     PRIMARY KEY (userid)
-	);`)
+);`)
 	if err != nil {
 		panic(err)
 	}

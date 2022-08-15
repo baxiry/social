@@ -34,6 +34,7 @@ func Signup(c echo.Context) error {
 
 // insertUser register new user in db
 func insertUser(email, pass, gender string) error {
+
 	insert, err := db.Query(
 		"INSERT INTO social.users(email, password, gender) VALUES ( ?, ?, ?)",
 		email, pass, gender)

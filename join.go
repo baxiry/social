@@ -9,6 +9,7 @@ import (
 
 // signup sing up new user handler
 func Signup(c echo.Context) error {
+
 	email := c.FormValue("email")
 	pass := c.FormValue("password")
 	m := c.FormValue("man")

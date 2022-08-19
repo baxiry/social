@@ -26,7 +26,7 @@ type User struct {
 	Photos   string `db:"photo"`
 }
 
-// getUserIfor from db
+// getUserIfor select * by Id
 func getUserInfo(userid int) (user User) {
 
 	rows, err := db.Query("SELECT * FROM social.users WHERE userid = ?", userid)

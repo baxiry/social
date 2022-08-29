@@ -1,4 +1,4 @@
-module store
+module meet
 
 go 1.18
 

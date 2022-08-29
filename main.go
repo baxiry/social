@@ -9,21 +9,21 @@ import (
 //
 func main() {
 
-	db = setdb()
+	db = ConnectDB()
 	defer db.Close()
 
 	e := echo.New()
 
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
-	e.Renderer = templ()
+	e.Renderer = Templs()
 
 	// files
-	e.Static("/assets", assets())
-	e.Static("/fs", photoFold())
+	e.Static("/assets", Assets())
+	e.Static("/fs", PhotoFold())
 
 	// account and verefy
-	e.GET("/", homePage)
+	e.GET("/", HomePage)
 	e.GET("/sign", SignPage)
 	e.POST("/sign", Signup)
 	e.GET("/login", LoginPage)

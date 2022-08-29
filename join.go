@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"meet/auth"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -56,7 +57,7 @@ func Login(c echo.Context) error {
 
 	if pass == fpass && pass != "" {
 		//userSession[email] = name
-		NewSession(c, username, userid)
+		auth.NewSession(c, username, userid)
 		return c.Redirect(http.StatusSeeOther, "/") // 303 code
 		// TODO redirect to latest page
 	}

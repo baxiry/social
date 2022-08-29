@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"meet/auth"
 	"net/http"
 	"strconv"
 
@@ -10,7 +11,7 @@ import (
 )
 
 // gets all user information for update this info
-func getOneUser(userid int) (string, string, string, string) {
+func GetOneUser(userid int) (string, string, string, string) {
 	var name, email, phon, avatar string
 	err := db.QueryRow(
 		"SELECT username, email,phon, linkavatar FROM stores.users WHERE userid = ?",
@@ -61,13 +62,13 @@ func Search_one(c echo.Context) error {
 	phon := c.FormValue("phon")
 	fmt.Println("name+email+phon is :", name, email, phon)
 
-	err := updateUserInfo(name, uid.(int))
+	err := UpdateUserInfo(name, uid.(int))
 	if err != nil {
 		fmt.Println("error at update db function", err)
 	}
 
 	// update session information
-	NewSession(c, name, uid.(int))
+	auth.NewSession(c, name, uid.(int))
 
 	// redirect to acoun page
 	userid := strconv.Itoa(uid.(int))

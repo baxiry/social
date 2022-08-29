@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"meet/auth"
 	"net/http"
 	"strconv"
 	"strings"
@@ -50,7 +51,7 @@ func getUserInfo(userid int) (user User) {
 }
 
 func Profile(c echo.Context) error {
-	username, userid, err := GetSession(c)
+	username, userid, err := auth.GetSession(c)
 	if err != nil {
 		//println(c.Redirect(http.StatusSeeOther, "/login"))
 		fmt.Println("no session", err)
@@ -75,7 +76,7 @@ func Profile(c echo.Context) error {
 // updatePage update Page info
 func UpdatePage(c echo.Context) error {
 
-	username, userid, err := GetSession(c)
+	username, userid, err := auth.GetSession(c)
 	if err != nil {
 		println(c.Redirect(http.StatusSeeOther, "/login"))
 		fmt.Println("error of upacount handler is ", err)
@@ -98,7 +99,7 @@ func UpdatePage(c echo.Context) error {
 func Update(c echo.Context) error {
 	fmt.Println("update account")
 
-	_, userid, err := GetSession(c)
+	_, userid, err := auth.GetSession(c)
 	if err != nil {
 		println(c.Redirect(http.StatusSeeOther, "/login"))
 		return nil
@@ -120,7 +121,7 @@ func Update(c echo.Context) error {
 }
 
 // update user info in db
-func updateUserInfo(field string, userid int) error {
+func UpdateUserInfo(field string, userid int) error {
 
 	//Update db
 	stmt, err := db.Prepare("update social.users set " + field + "=? where userid=?")

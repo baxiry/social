@@ -12,45 +12,16 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/gorilla/sessions"
-	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
-// init and create database;
 var (
-	appName   = "social"
-	tableName = "users"
+	AppName   = "meet"
+	TableName = "users"
 	db        *sql.DB
 )
 
-func createTable(dbName, tableName string, db *sql.DB) {
-	//CREATE DATABASE ;
-	//tbname := dbName + "." + tableName   // ` + tbname + `
-	_, err := db.Exec(`
-CREATE TABLE IF NOT EXISTS social.users  (
-    userid int unsigned NOT NULL AUTO_INCREMENT,
-    username varchar(255) NOT NULL,
-    password varchar(255) NOT NULL,
-    email varchar(255) UNIQUE NOT NULL,
-    photos text NOT NULL DEFAULT "",
-    number_photos int NOT NULL DEFAULT 0,
-    PRIMARY KEY (userid)
-);`)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func createDB(dbName string, db *sql.DB) {
-	//CREATE DATABASE ;
-	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS " + dbName)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func setdb() *sql.DB {
+func ConnectDB() *sql.DB {
 	db, err := sql.Open(
 		"mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
@@ -78,6 +49,32 @@ func setdb() *sql.DB {
 	return db
 }
 
+func CreateTable(dbName, tableName string, db *sql.DB) {
+	//CREATE DATABASE ;
+	//tbname := dbName + "." + tableName   // ` + tbname + `
+	_, err := db.Exec(`
+CREATE TABLE IF NOT EXISTS social.users  (
+    userid int unsigned NOT NULL AUTO_INCREMENT,
+    username varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
+    email varchar(255) UNIQUE NOT NULL,
+    photos text NOT NULL DEFAULT "",
+    number_photos int NOT NULL DEFAULT 0,
+    PRIMARY KEY (userid)
+);`)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func CreateDB(dbName string, db *sql.DB) {
+	//CREATE DATABASE ;
+	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS " + dbName)
+	if err != nil {
+		panic(err)
+	}
+}
+
 // init templates
 
 type Template struct {
@@ -91,7 +88,7 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 var listFiles []string
 
 // path file is depends to enveronment.
-func templ() *Template {
+func Templs() *Template {
 
 	path := "./tmpl"
 	err := filepath.Walk(path, doF)
@@ -103,7 +100,7 @@ func templ() *Template {
 	return &Template{templates: template.Must(template.ParseFiles(listFiles...))}
 }
 
-var doF = func(xpath string, xinfo os.FileInfo, xerr error) error {
+func doF(xpath string, xinfo os.FileInfo, xerr error) error {
 
 	// first thing to do, check error. and decide what to do about it
 	if xerr != nil {
@@ -122,7 +119,7 @@ var doF = func(xpath string, xinfo os.FileInfo, xerr error) error {
 
 // folder when photos is stored.
 
-func photoFold() string {
+func PhotoFold() string {
 	//if os.Getenv("USERNAME") == "fedor" {
 	//	return "/home/fedor/repo/files/"
 	//}
@@ -130,39 +127,14 @@ func photoFold() string {
 }
 
 // where is assets  path ?
-func assets() string {
+func Assets() string {
 	home, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	if home != "/Users/fedora/repo/social" {
+	if home != "/Users/fedora/repo/meet" {
 		return "/root/social/assets"
 	}
 	return "assets"
-}
-
-// Helpers functions
-
-// GetSession return username & userid as session's user
-func GetSession(c echo.Context) (string, int, error) {
-	sess, _ := session.Get("session", c)
-	if sess.Values["userid"] == nil {
-
-		return "", 0, fmt.Errorf("no session")
-	}
-	return sess.Values["username"].(string), sess.Values["userid"].(int), nil
-}
-
-// newSession creates new session
-func NewSession(c echo.Context, username string, userid int) {
-	sess, _ := session.Get("session", c)
-	sess.Options = &sessions.Options{
-		Path:     "/",
-		MaxAge:   60 * 10, // 10 minutes of session,
-		HttpOnly: true,    // no websocket or any thing else
-	}
-	sess.Values["username"] = username
-	sess.Values["userid"] = userid
-	sess.Save(c.Request(), c.Response())
 }

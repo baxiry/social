@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"meet/helps"
 	"net/http"
 	"strings"
 
@@ -11,7 +12,7 @@ import (
 )
 
 //
-func homePage(c echo.Context) error {
+func HomePage(c echo.Context) error {
 
 	sess, _ := session.Get("session", c)
 	username := sess.Values["username"]
@@ -38,11 +39,11 @@ func homePage(c echo.Context) error {
 //getCatigories get all photo name of catigories.
 func getRecentUsers() (users []User) {
 	rows, err := db.Query("SELECT userid, username, email, photos from social.users;")
-	CheckErr("getResentUsers error : ", err)
+	helps.Check("getResentUsers error : ", err)
 	defer rows.Close()
 
 	err = scan.Rows(&users, rows)
-	CheckErr("", err)
+	helps.Check("", err)
 
 	return users
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"meet/auth"
 	"net/http"
 	"os"
 	"strconv"
@@ -14,7 +15,7 @@ import (
 // phootosPage router fo update Fotos Page
 func PhotosPage(c echo.Context) error {
 
-	username, userid, err := GetSession(c)
+	username, userid, err := auth.GetSession(c)
 	if err != nil {
 		fmt.Println("session name is nil redirect to login", http.StatusSeeOther)
 		c.Redirect(http.StatusSeeOther, "/login") // 303 code
@@ -77,7 +78,8 @@ func UpPhotos(c echo.Context) error {
 		}
 		defer src.Close()
 		// Destination
-		dst, err := os.Create(photoFold() + file.Filename)
+		// photoFold()
+		dst, err := os.Create("../files/" + file.Filename)
 		if err != nil {
 			fmt.Println("err in io.Create()")
 			return err

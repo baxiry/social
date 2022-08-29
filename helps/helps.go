@@ -1,8 +1,8 @@
-package main
+package helps
 
 import "fmt"
 
-func CheckErr(msg string, err error) {
+func Check(msg string, err error) {
 	if err != nil {
 		fmt.Println(msg, err)
 		return

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"meet/auth"
 	"net/http"
 
 	"github.com/labstack/echo-contrib/session"
@@ -23,7 +24,7 @@ func SelectMessages(userid int) (string, string, string, string) {
 // updateAcount updates Acount information
 func updateMessage(c echo.Context) error {
 
-	username, userid, err := GetSession(c)
+	username, userid, err := auth.GetSession(c)
 
 	if err == nil {
 		// login first

@@ -85,7 +85,7 @@ func MyFavoriet(c echo.Context) error {
 }
 
 // acount render profile of user.
-func MachLike(c echo.Context) error {
+func MatchLike(c echo.Context) error {
 	sess, _ := session.Get("session", c)
 	data := make(map[string]interface{}, 2)
 	data["username"] = sess.Values["username"]
@@ -101,7 +101,7 @@ func MachLike(c echo.Context) error {
 }
 
 // acount render profile of user.
-func MachFavorites(c echo.Context) error {
+func MatchFavorites(c echo.Context) error {
 	sess, _ := session.Get("session", c)
 	data := make(map[string]interface{}, 2)
 	data["username"] = sess.Values["username"]

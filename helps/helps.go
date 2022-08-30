@@ -2,9 +2,19 @@ package helps
 
 import "fmt"
 
-func Check(msg string, err error) {
+func printError(msg string, err error) {
 	if err != nil {
 		fmt.Println(msg, err)
-		return
 	}
+}
+
+func PanicError(msg string, err error) {
+	if err != nil {
+		fmt.Println(msg)
+		panic(err)
+	}
+}
+
+func ReturnError(err error) error {
+	return err
 }

@@ -13,7 +13,7 @@ func GetSession(c echo.Context) (string, int, error) {
 	sess, _ := session.Get("session", c)
 	if sess.Values["userid"] == nil {
 
-		return "", 0, fmt.Errorf("no session")
+		return "", -1, fmt.Errorf("no session")
 	}
 	return sess.Values["username"].(string), sess.Values["userid"].(int), nil
 }

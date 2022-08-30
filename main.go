@@ -6,7 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-//
 func main() {
 
 	db = ConnectDB()
@@ -16,7 +15,7 @@ func main() {
 
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
-	e.Renderer = Templs()
+	e.Renderer = Templs("templates")
 
 	// files
 	e.Static("/assets", Assets())

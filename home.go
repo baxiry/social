@@ -21,6 +21,7 @@ func HomePage(c echo.Context) error {
 	data["userid"] = userid
 	users := getRecentUsers()
 
+	fmt.Print("profile info", ProfileInfo(userid), "\n\n")
 	for k := range users {
 		photos := strings.Split(users[k].Photos, "; ")
 		users[k].Photos = photos[0]
@@ -45,31 +46,13 @@ func getRecentUsers() (users []User) {
 	return users
 }
 
-/*
-
-type Profile struct{}
-
-func Profile(profileId int) (profile Profile) {
-	rows, err := db.Query("select productID, catigory, title, description, photos, price from stores.products where ownerid = ?", ownerid)
+func ProfileInfo(userid int) (profile User) {
+	rows, err := db.Query("select * from social.users where userid = ?", userid)
 	if err != nil {
-		fmt.Println("at query func owner id db select ", err)
+		fmt.Println("\nat query func owner id db select ", err)
 	}
 	defer rows.Close() // ??
-
-	// iterate over rows
-	for rows.Next() {
-		err = rows.Scan(&p.ProductId, &p.Catigory, &p.Title, &p.Description, &p.Photo, &p.Price)
-		if err != nil {
-			fmt.Println("err when getting Porducts from db. at rews.Next()", err)
-			return nil
-		}
-		if p.Photo == "" {
-			fmt.Println("no fotots")
-		}
-		products = append(products, p)
-
-	}
+	err = scan.Rows(&profile, rows)
+	println(err)
 	return profile
 }
-
-*/

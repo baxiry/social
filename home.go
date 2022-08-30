@@ -2,24 +2,21 @@ package main
 
 import (
 	"fmt"
+	"meet/auth"
 	"meet/helps"
 	"net/http"
 	"strings"
 
 	"github.com/blockloop/scan"
-	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
-//
 func HomePage(c echo.Context) error {
 
-	sess, _ := session.Get("session", c)
-	username := sess.Values["username"]
-	userid := sess.Values["userid"]
+	username, userid, err := auth.GetSession(c)
+	helps.PrintError("get session", err)
 
 	data := make(map[string]interface{}, 3)
-
 	data["username"] = username
 	data["userid"] = userid
 	users := getRecentUsers()
@@ -36,14 +33,14 @@ func HomePage(c echo.Context) error {
 	return nil
 }
 
-//getCatigories get all photo name of catigories.
+// getCatigories get all photo name of catigories.
 func getRecentUsers() (users []User) {
 	rows, err := db.Query("SELECT userid, username, email, photos from social.users;")
-	helps.Check("getResentUsers error : ", err)
+	helps.PrintError("from getResentUsers: ", err)
 	defer rows.Close()
 
 	err = scan.Rows(&users, rows)
-	helps.Check("", err)
+	helps.PrintError("error from schan.Rows: ", err)
 
 	return users
 }

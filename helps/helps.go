@@ -2,7 +2,7 @@ package helps
 
 import "fmt"
 
-func printError(msg string, err error) {
+func PrintError(msg string, err error) {
 	if err != nil {
 		fmt.Println(msg, err)
 	}

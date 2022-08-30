@@ -5,7 +5,6 @@ import (
 	"meet/auth"
 	"net/http"
 
-	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
@@ -44,16 +43,18 @@ func updateMessage(c echo.Context) error {
 
 // acount render profile of user.
 func MessagesPage(c echo.Context) error {
-	sess, _ := session.Get("session", c)
-	data := make(map[string]interface{}, 2)
-	data["username"] = sess.Values["username"]
-	fmt.Println("username is ", data["username"])
-	data["userid"] = sess.Values["userid"]
-	fmt.Println("user id or user is : ", data["userid"])
-	// TODO get all info like foto from db
 
-	if data["userid"] == nil {
+	data := make(map[string]interface{}, 2)
+	username, userid, err := auth.GetSession(c) // session.Get("session", c)
+	if err != nil {
+		fmt.Println(err)
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
+
+	data["username"] = username
+	data["userid"] = userid
+	fmt.Println("username is ", username)
+	fmt.Println("user id or user is : ", userid)
+	// TODO get all info like foto from db
 	return c.Render(200, "messages.html", data)
 }

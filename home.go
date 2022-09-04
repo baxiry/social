@@ -57,7 +57,8 @@ func ProfileInfo(userid int) (profile User) {
 	return profile
 }
 
-func setAvatar(gen, photo string) string {
+// SetAvatar set real or blank, man or woman avatar
+func SetAvatar(gen, photo string) string {
 	if photo != "" {
 		return photo
 	}
@@ -66,7 +67,6 @@ func setAvatar(gen, photo string) string {
 	}
 	if gen == "f" {
 		return "bwoman.jpg"
-
 	}
 	return ""
 }

@@ -35,7 +35,7 @@ func main() {
 
 	e.GET("/messages", MessagesPage)
 	e.GET("/activity", Activity)
-	e.GET("/search", Search)
+	e.GET("/search", SearchPage)
 
 	//e.POST("/updatefotos/:id", updateProdFotos)
 

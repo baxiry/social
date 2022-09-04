@@ -77,7 +77,8 @@ func Search_one(c echo.Context) error {
 }
 
 // updateAcount updates Acount information
-func Search(c echo.Context) error {
+func SearchPage(c echo.Context) error {
+
 	data := make(map[string]interface{}, 1)
 	sess, _ := session.Get("session", c)
 

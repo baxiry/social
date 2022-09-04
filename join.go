@@ -84,6 +84,6 @@ func SignPage(c echo.Context) error {
 }
 
 func LoginPage(c echo.Context) error {
-	fmt.Println(c.Render(200, "login.html", ""))
+	fmt.Println(c.Render(200, "login.html", nil))
 	return nil
 }

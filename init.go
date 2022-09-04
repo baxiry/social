@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"path/filepath"
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -86,33 +85,46 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 }
 
 // path file is depends to enveronment.
+
 func Templs(path string) *Template {
+	return &Template{templates: template.Must(template.ParseFiles(listFiles(path)...))}
+}
 
-	var listFiles []string
-	doF := func(xpath string, xinfo os.FileInfo, xerr error) error {
+// listFiles return list filenames os spicific dir
+// use paht.wolkFile insteade
 
-		// first thing to do, check error. and decide what to do about it
-		if xerr != nil {
-			fmt.Printf("error [%v] at a path [%q]\n", xerr, xpath)
-			return xerr
-		}
+func listFiles(dir string) (list []string) {
 
-		// find out if it's a dir or file, if file, print info
-		if xinfo.IsDir() {
-			fmt.Printf("is dir.\n")
-		} else {
-			listFiles = append(listFiles, fmt.Sprintf("%s/%s", filepath.Dir(xpath), xinfo.Name()))
-		}
-		return xerr
-	}
-
-	err := filepath.Walk(path, doF)
-
+	f, err := os.Open(dir)
 	if err != nil {
-		fmt.Printf("error walking the path %q: %v\n", path, err)
+		fmt.Println(err)
+		return
+	}
+	files, err := f.Readdir(0)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	return &Template{templates: template.Must(template.ParseFiles(listFiles...))}
+	sublist := make([]string, 0)
+	root := dir + "/"
+	for _, v := range files {
+		root = dir + "/"
+		if v.IsDir() {
+			root = root + v.Name()
+			sublist = listFiles(root)
+			//for _, filename := range sublist {
+			//	list = append(list, filename)
+			//}
+			continue
+		}
+		list = append(list, root+v.Name())
+	}
+	for _, f := range sublist {
+		list = append(list, f)
+	}
+
+	return list
 }
 
 // folder when photos is stored.

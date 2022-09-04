@@ -1,5 +1,5 @@
 <!-- header is head and navbar -->
-{{template "header.html" .}}
+{{template "header.html"}}
 <body>
 <div class="container">
 <div class="p-5"><h2>Home page</h2></div> 
@@ -8,7 +8,7 @@
     <div class="col-3">
     <a href="/user/{{.UserId}}" >
     <div class="card shadow-sm">
-      <img src="/fs/{{.Photos}}" class="card-img-top" alt="">
+        <img src="/fs/{{.Photos}}" class="card-img-top" alt="">
       <div class="card-body">
         <h3 class="card-title">{{.Username}}</h3>
         <p class="card-text">{{.UserId}}</p>

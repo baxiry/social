@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// HomePage get home page
 func HomePage(c echo.Context) error {
 
 	username, userid, err := auth.GetSession(c)
@@ -27,7 +28,7 @@ func HomePage(c echo.Context) error {
 	fmt.Print("profile info", ProfileInfo(userid), "\n\n")
 	for i := range users {
 		photos := strings.Split(users[i].Photos, "; ")
-		users[i].Photos = setAvatar(users[i].Gender, photos[0])
+		users[i].Photos = SetAvatar(users[i].Gender, photos[0])
 	}
 
 	data["users"] = users
@@ -37,7 +38,7 @@ func HomePage(c echo.Context) error {
 
 // getCatigories get all photo name of catigories.
 func getRecentUsers() (users []User) {
-	rows, err := db.Query("SELECT userid, username, email, photos, gender from social.users;")
+	rows, err := db.Query("SELECT userid, username, email, photos, gender from users;")
 	defer rows.Close()
 
 	err = scan.Rows(&users, rows)
@@ -46,8 +47,9 @@ func getRecentUsers() (users []User) {
 	return users
 }
 
+// get Profile with all info
 func ProfileInfo(userid int) (profile User) {
-	rows, err := db.Query("select * from social.users where userid = ?", userid)
+	rows, err := db.Query("select * from users where userid = ?", userid)
 	if err != nil {
 		fmt.Println("\nat query func owner id db select ", err)
 	}

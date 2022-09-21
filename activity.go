@@ -8,8 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-//
-func Activity(c echo.Context) error {
+func ActivityPage(c echo.Context) error {
 	data := make(map[string]interface{}, 1)
 	sess, _ := session.Get("session", c)
 

@@ -11,26 +11,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type User struct {
-	UserId   int    `db:"userid"`
-	Username string `db:"username"`
-	Password string `db:"password"`
-	Email    string `db:"email"`
-	Gender   string `db:"dender"`
-	Age      int    `db:"age"`
-	Height   int    `db:"height"`
-	Weight   int    `db:"weight"`
-	Lang     string `db:"lang"`
-	Profess  string `db:"profess"`
-	Contry   string `db:"contry"`
-	Descript string `db:"descript"`
-	Photos   string `db:"photo"`
-}
-
 // getUserIfor select * by Id
 func getUserInfo(userid int) (user User) {
 
-	rows, err := db.Query("SELECT * FROM social.users WHERE userid = ?", userid)
+	rows, err := db.Query("SELECT * FROM users WHERE userid = ?", userid)
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -106,7 +90,7 @@ func Update(c echo.Context) error {
 	}
 
 	stmt, err := db.Prepare(
-		`update social.users set username=?, age=?, profess=?, descript=?,contry =? where userid = ?`)
+		`update users set username=?, age=?, profess=?, descript=?,contry =? where userid = ?`)
 	if err != nil {
 		return err
 	}
@@ -124,7 +108,7 @@ func Update(c echo.Context) error {
 func UpdateUserInfo(field string, userid int) error {
 
 	//Update db
-	stmt, err := db.Prepare("update social.users set " + field + "=? where userid=?")
+	stmt, err := db.Prepare("update users set " + field + "=? where userid=?")
 	if err != nil {
 		return err
 	}

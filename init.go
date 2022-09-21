@@ -7,9 +7,9 @@ import (
 	"io"
 	"log"
 	"os"
-	"strings"
 
-	_ "github.com/go-sql-driver/mysql"
+	//_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/labstack/echo/v4"
 )
@@ -20,54 +20,45 @@ var (
 	db        *sql.DB
 )
 
-func ConnectDB() *sql.DB {
-	db, err := sql.Open(
-		"mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
+func createTable(db *sql.DB) {
+	sts := `
+DROP TABLE IF EXISTS users;
+CREATE TABLE IF NOT EXISTS users(
+    userid INTEGER PRIMARY KEY AUTOINCREMENT,
+    Username  VARCAR(250) NOT NULL ,
+    Password  varcar(250) NOT NULL,
+    Email     VARCAR(250) NOT NULL,
+    Gender    VARCAR(250) NOT NULL,
+    Age       INT(2) NOT NULL,
+    Height    INT NOT NULL,
+    Weight    INT NOT NULL,
+    Lang      VARCAR(250) NOT NULL,
+    Profess   VARCAR(250) NOT NULL,
+    Contry    VARCAR(250) NOT NULL,
+    Descript  TEXT NOT NULL,
+    Photos    TEXT NOT NULL
+);
+`
+	_, err := db.Exec(sts)
 	if err != nil {
-
-		log.Println("open database error: ", err)
-		switch {
-		case strings.Contains(err.Error(), "connection refused"):
-			// TODO handle errors by code of error not by strings.
-
-			//cmd := exec.Command("mysql.server", "restart")
-			// for systemd linux : exec.Command("sudo", "service", "mariadb", "start")
-			//cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))
-			//err = cmd.Run()
-			if err != nil {
-				fmt.Println("error when run database cmd ", err)
-			}
-		default:
-			log.Println("not knowen err at db.Ping() func")
-			log.Println("unknown this error", err)
-			os.Exit(1)
-			//return nil
-		}
+		log.Fatal(err)
 	}
 
+}
+
+// init database
+func ConnectDB() *sql.DB {
+	db, err := sql.Open("sqlite3", "./database.sql")
+	if err != nil {
+		log.Println("open database error: ", err)
+	}
+	createTable(db)
+	fmt.Println("table users created")
 	return db
 }
 
-func CreateTable(dbName, tableName string, db *sql.DB) {
-	//CREATE DATABASE ;
-	//tbname := dbName + "." + tableName   // ` + tbname + `
-	_, err := db.Exec(`
-CREATE TABLE IF NOT EXISTS social.users  (
-    userid int unsigned NOT NULL AUTO_INCREMENT,
-    username varchar(255) NOT NULL,
-    password varchar(255) NOT NULL,
-    email varchar(255) UNIQUE NOT NULL,
-    photos text NOT NULL DEFAULT "",
-    number_photos int NOT NULL DEFAULT 0,
-    PRIMARY KEY (userid)
-);`)
-	if err != nil {
-		panic(err)
-	}
-}
-
+// CREATE DATABASE ;
 func CreateDB(dbName string, db *sql.DB) {
-	//CREATE DATABASE ;
 	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS " + dbName)
 	if err != nil {
 		panic(err)

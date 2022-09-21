@@ -8,6 +8,22 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type User struct {
+	UserId   int    `db:"userid"`
+	Username string `db:"username"`
+	Password string `db:"password"`
+	Email    string `db:"email"`
+	Gender   string `db:"dender"`
+	Age      int    `db:"age"`
+	Height   int    `db:"height"`
+	Weight   int    `db:"weight"`
+	Lang     string `db:"lang"`
+	Profess  string `db:"profess"`
+	Contry   string `db:"contry"`
+	Descript string `db:"descript"`
+	Photos   string `db:"photo"`
+}
+
 // signup sing up new user handler
 func Signup(c echo.Context) error {
 
@@ -38,7 +54,7 @@ func Signup(c echo.Context) error {
 func insertUser(email, pass, gender string) error {
 
 	insert, err := db.Query(
-		"INSERT INTO social.users(email, password, gender) VALUES ( ?, ?, ?)",
+		"INSERT INTO users(email, password, gender) VALUES ( ?, ?, ?)",
 		email, pass, gender)
 
 	// if there is an error inserting, handle it
@@ -71,7 +87,7 @@ func selectUser(femail string) (int, string, string) {
 	var username, password string
 	var userid int
 	err := db.QueryRow(
-		"SELECT userid, username, password FROM social.users WHERE email = ?",
+		"SELECT userid, username, password FROM users WHERE email = ?",
 		femail).Scan(&userid, &username, &password)
 	if err != nil {
 		fmt.Println(err.Error())

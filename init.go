@@ -22,21 +22,21 @@ var (
 
 func createTable(db *sql.DB) {
 	sts := `
-DROP TABLE IF EXISTS users;
+--DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users(
     userid INTEGER PRIMARY KEY AUTOINCREMENT,
-    Username  VARCAR(250) NOT NULL ,
+    Username  VARCAR(250) DEFAULT "",
     Password  varcar(250) NOT NULL,
     Email     VARCAR(250) NOT NULL,
     Gender    VARCAR(250) NOT NULL,
-    Age       INT(2) NOT NULL,
-    Height    INT NOT NULL,
-    Weight    INT NOT NULL,
-    Lang      VARCAR(250) NOT NULL,
-    Profess   VARCAR(250) NOT NULL,
-    Contry    VARCAR(250) NOT NULL,
-    Descript  TEXT NOT NULL,
-    Photos    TEXT NOT NULL
+    Age       INT(2) DEFAULT 0,
+    Height    INT DEFAULT 0,
+    Weight    INT DEFAULT 0,
+    Lang      VARCAR(250) DEFAULT "",
+    Profess   VARCAR(250) DEFAULT "",
+    Contry    VARCAR(250) DEFAULT "",
+    Descript  TEXT DEFAULT "",
+    Photos    TEXT DEFAULT ""
 );
 `
 	_, err := db.Exec(sts)
@@ -48,21 +48,13 @@ CREATE TABLE IF NOT EXISTS users(
 
 // init database
 func ConnectDB() *sql.DB {
-	db, err := sql.Open("sqlite3", "./database.sql")
+	db, err := sql.Open("sqlite3", "database.sql")
 	if err != nil {
 		log.Println("open database error: ", err)
 	}
 	createTable(db)
 	fmt.Println("table users created")
 	return db
-}
-
-// CREATE DATABASE ;
-func CreateDB(dbName string, db *sql.DB) {
-	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS " + dbName)
-	if err != nil {
-		panic(err)
-	}
 }
 
 // init templates
@@ -138,4 +130,12 @@ func Assets() string {
 		return "/root/social/assets"
 	}
 	return "assets"
+}
+
+// CREATE DATABASE (not with sqlite);
+func CreateDB(dbName string, db *sql.DB) {
+	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS " + dbName + ";")
+	if err != nil {
+		panic(err)
+	}
 }

@@ -40,8 +40,6 @@ func Signup(c echo.Context) error {
 		gender = "f"
 	}
 
-	fmt.Println(email, pass, "gender is : ", gender)
-
 	err := insertUser(email, pass, gender)
 	if err != nil {
 		fmt.Println(err)
@@ -53,16 +51,14 @@ func Signup(c echo.Context) error {
 // insertUser register new user in db
 func insertUser(email, pass, gender string) error {
 
-	insert, err := db.Query(
-		"INSERT INTO users(email, password, gender) VALUES ( ?, ?, ?)",
-		email, pass, gender)
+	sts := "INSERT INTO users(email, password, gender) VALUES ( ?, ?, ?)"
+	_, err := db.Exec(sts, email, pass, gender)
 
 	// if there is an error inserting, handle it
 	if err != nil {
 		return err
 	}
 	// be careful deferring Queries if you are using transactions
-	insert.Close()
 	return nil
 }
 
@@ -70,6 +66,7 @@ func Login(c echo.Context) error {
 	femail := c.FormValue("email")
 	fpass := c.FormValue("password")
 	userid, username, pass := selectUser(femail)
+	fmt.Println("login with ", userid, username, pass)
 
 	if pass == fpass && pass != "" {
 		//userSession[email] = name
@@ -90,7 +87,7 @@ func selectUser(femail string) (int, string, string) {
 		"SELECT userid, username, password FROM users WHERE email = ?",
 		femail).Scan(&userid, &username, &password)
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("ERROR: ", err.Error())
 	}
 	return userid, username, password
 }

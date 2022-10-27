@@ -31,10 +31,8 @@
           <a class="nav-link" href="/search">Search</a>
         </li>
     </div>
-        {{if .userid }} 
-            <a class="btn btn-outline-success m-1 btn-sm" href="/user/{{.userid}}" >
-              {{if eq .username ""}}Profile{{else}}{{.username}}{{end}}
-            </a>
+        {{if ne .userid  -1 }} 
+            <a class="btn btn-outline-success m-1 btn-sm" href="/user/{{.userid}}" >Profile</a>
         {{else}}
             <a class="btn btn-outline-success m-1 btn-sm" href="/sign">Signup</a>
             <a class="btn btn-outline-success m-1 btn-sm" href="/login">Login</a>

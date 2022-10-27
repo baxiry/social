@@ -75,7 +75,13 @@ func Login(c echo.Context) error {
 		// TODO redirect to latest page
 	}
 	// TODO flush this message
-	fmt.Println(c.Render(200, "login.html", "username or pass is wrong!"))
+
+	data := make(map[string]interface{}, 2)
+	data["username"] = username
+	data["userid"] = userid
+	data["message"] = "username or pass is wrong!"
+
+	fmt.Println(c.Render(200, "login.html", data))
 	return nil
 }
 
@@ -87,16 +93,33 @@ func selectUser(femail string) (int, string, string) {
 		"SELECT userid, username, password FROM users WHERE email = ?",
 		femail).Scan(&userid, &username, &password)
 	if err != nil {
-		fmt.Println("ERROR: ", err.Error())
+		fmt.Println("selet user ERROR: ", err.Error())
+		return -1, "", ""
 	}
 	return userid, username, password
 }
 
 func SignPage(c echo.Context) error {
-	return c.Render(200, "sign.html", "")
+	username, userid, err := auth.GetSession(c)
+	if err != nil {
+		fmt.Println("LoginPage error is : ", err)
+	}
+	data := make(map[string]interface{}, 2)
+	data["username"] = username
+	data["userid"] = userid
+
+	return c.Render(200, "sign.html", data)
 }
 
 func LoginPage(c echo.Context) error {
-	fmt.Println(c.Render(200, "login.html", nil))
+	username, userid, err := auth.GetSession(c)
+	if err != nil {
+		fmt.Println("LoginPage error is : ", err)
+	}
+	data := make(map[string]interface{}, 2)
+	data["username"] = username
+	data["userid"] = userid
+
+	fmt.Println(c.Render(200, "login.html", data))
 	return nil
 }

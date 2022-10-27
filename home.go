@@ -25,13 +25,14 @@ func HomePage(c echo.Context) error {
 	data["userid"] = userid
 	users := getRecentUsers()
 
-	fmt.Print("profile info", ProfileInfo(userid), "\n\n")
+	//	fmt.Print("profile info", ProfileInfo(userid), "\n\n")
 	for i := range users {
 		photos := strings.Split(users[i].Photos, "; ")
 		users[i].Photos = SetAvatar(users[i].Gender, photos[0])
 	}
 
 	data["users"] = users
+	//data["user"] = ProfileInfo(userid)
 	fmt.Println(c.Render(http.StatusOK, "home.html", data))
 	return nil
 }
@@ -43,6 +44,7 @@ func getRecentUsers() (users []User) {
 
 	err = scan.Rows(&users, rows)
 	helps.PrintError("error from schan.Rows: ", err)
+	fmt.Println("users from getRecentUsers() func")
 
 	return users
 }

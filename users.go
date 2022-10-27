@@ -41,6 +41,9 @@ func Profile(c echo.Context) error {
 		fmt.Println("no session", err)
 	}
 
+	fmt.Println("username is : ", username)
+	fmt.Println("userid is : ", userid)
+
 	id, _ := strconv.Atoi(c.Param("id"))
 
 	data := make(map[string]interface{}, 1)

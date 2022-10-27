@@ -17,9 +17,7 @@ func PhotosPage(c echo.Context) error {
 
 	username, userid, err := auth.GetSession(c)
 	if err != nil {
-		fmt.Println("session name is nil redirect to login", http.StatusSeeOther)
-		c.Redirect(http.StatusSeeOther, "/login") // 303 code
-		return nil
+		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 
 	data := make(map[string]interface{}, 3)
@@ -32,8 +30,7 @@ func PhotosPage(c echo.Context) error {
 
 	fmt.Println("fotos is : ", data)
 
-	fmt.Println(c.Render(http.StatusOK, "upfotos.html", data))
-	return nil
+	return c.Render(http.StatusOK, "upfotos.html", data)
 }
 
 // updateFotos updates photos of products
@@ -94,7 +91,7 @@ func UpPhotos(c echo.Context) error {
 
 	err = c.Redirect(http.StatusSeeOther, "/user/"+pid)
 	if err != nil {
-		fmt.Println("\nerr when update product photo", err)
+		fmt.Println("\nerr when update user photo", err)
 	}
 	return nil
 }
@@ -103,8 +100,9 @@ func UpPhotos(c echo.Context) error {
 func UpdatePhotos(photos string, userid int) error {
 
 	//Update db
-	stmt, err := db.Prepare("update  social.users set photos=? where userid=?")
+	stmt, err := db.Prepare("update  users set photos=? where userid=?")
 	if err != nil {
+		fmt.Println("update photos in database", err)
 		return err
 	}
 	defer stmt.Close()
@@ -112,6 +110,7 @@ func UpdatePhotos(photos string, userid int) error {
 	// execute
 	_, err = stmt.Exec(photos, userid)
 	if err != nil {
+		fmt.Println("exe update photos in database", err)
 		return err
 	}
 
@@ -122,7 +121,7 @@ func UpdatePhotos(photos string, userid int) error {
 func getUserFotos(userid int) (photos []string) {
 	var picts string
 	err := db.QueryRow(
-		"SELECT photos FROM social.users WHERE userid = ?",
+		"SELECT photos FROM users WHERE userid = ?",
 		userid).Scan(&picts)
 	if err != nil {
 		return nil
@@ -130,6 +129,10 @@ func getUserFotos(userid int) (photos []string) {
 	list := strings.Split(picts, "; ")
 	// TODO split return 2 item in some casess, is this a bug ?
 	photos = filter(list)
+	fmt.Println("start for photos ", photos)
+	for k, v := range photos {
+		fmt.Println("photo ", k, v)
+	}
 	return photos
 }
 

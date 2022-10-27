@@ -7,8 +7,6 @@
 
 
 <div class="col p-2 m-2 border border-2">
-    user page
-
     <div  style="background-color: rgba(200, 200, 200, 200);">
         {{if eq .user.Photos "" }}
             <h1> no photo </h1>  
@@ -32,6 +30,8 @@
         Profession  &emsp;&emsp;<b>{{.user.Profess}}     </b><br>
         about &emsp;&emsp;<b>{{.user.Descript}}</b><br>
         gen   &emsp;&emsp;<b>{{.user.Gender}}</b><br>
+    
+         photo   &emsp;&emsp; {{.user.Photos}}
 
   </div>
 </div>

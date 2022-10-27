@@ -29,6 +29,7 @@ func HomePage(c echo.Context) error {
 	for i := range users {
 		photos := strings.Split(users[i].Photos, "; ")
 		users[i].Photos = SetAvatar(users[i].Gender, photos[0])
+		fmt.Println(users[i].Photos)
 	}
 
 	data["users"] = users
@@ -44,7 +45,6 @@ func getRecentUsers() (users []User) {
 
 	err = scan.Rows(&users, rows)
 	helps.PrintError("error from schan.Rows: ", err)
-	fmt.Println("users from getRecentUsers() func")
 
 	return users
 }

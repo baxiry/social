@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS social;
 
 
-CREATE TABLE IF NOT EXISTS social.users (
+CREATE TABLE IF NOT EXISTS users (
     userid int unsigned NOT NULL AUTO_INCREMENT,
     username varchar(255) NOT NULL DEFAULT "",
     password varchar(255) NOT NULL ,

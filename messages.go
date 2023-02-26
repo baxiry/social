@@ -12,7 +12,7 @@ import (
 func SelectMessages(userid int) (string, string, string, string) {
 	var name, email, phon, avatar string
 	err := db.QueryRow(
-		"SELECT username, email,phon, linkavatar FROM stores.users WHERE userid = ?",
+		"SELECT username, email,phon, linkavatar FROM users WHERE userid = ?",
 		userid).Scan(&name, &email, &phon, &avatar)
 	if err != nil {
 		fmt.Println("no result or", err.Error())
@@ -24,13 +24,11 @@ func SelectMessages(userid int) (string, string, string, string) {
 func updateMessage(c echo.Context) error {
 
 	username, userid, err := auth.GetSession(c)
-
 	if err == nil {
-		// login first
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 
-	data := make(map[string]interface{}, 1)
+	data := make(map[string]interface{}, 2)
 	data["username"] = username
 	data["userid"] = userid
 

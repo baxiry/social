@@ -33,7 +33,7 @@ func PhotosPage(c echo.Context) error {
 	return c.Render(http.StatusOK, "upfotos.html", data)
 }
 
-// updateFotos updates photos of products
+// updateFotos updates photos
 func UpPhotos(c echo.Context) error {
 
 	pid := c.Param("id")
@@ -59,7 +59,7 @@ func UpPhotos(c echo.Context) error {
 		// TODO Rename pictures.
 	}
 
-	// databas function
+	// update photo link in db
 	err = UpdatePhotos(picts, id)
 
 	if err != nil {
@@ -67,14 +67,13 @@ func UpPhotos(c echo.Context) error {
 	}
 
 	for _, file := range files {
-		// Source
 		src, err := file.Open()
 		if err != nil {
 			fmt.Println("err in file.Open()")
 			return err
 		}
 		defer src.Close()
-		// Destination
+
 		// photoFold()
 		dst, err := os.Create("../files/" + file.Filename)
 		if err != nil {
@@ -98,22 +97,17 @@ func UpPhotos(c echo.Context) error {
 
 // update fotos name in database
 func UpdatePhotos(photos string, userid int) error {
-
 	//Update db
 	stmt, err := db.Prepare("update  users set photos=? where userid=?")
 	if err != nil {
-		fmt.Println("update photos in database", err)
 		return err
 	}
 	defer stmt.Close()
 
-	// execute
 	_, err = stmt.Exec(photos, userid)
 	if err != nil {
-		fmt.Println("exe update photos in database", err)
 		return err
 	}
-
 	return nil
 }
 
@@ -129,10 +123,6 @@ func getUserFotos(userid int) (photos []string) {
 	list := strings.Split(picts, "; ")
 	// TODO split return 2 item in some casess, is this a bug ?
 	photos = filter(list)
-	fmt.Println("start for photos ", photos)
-	for k, v := range photos {
-		fmt.Println("photo ", k, v)
-	}
 	return photos
 }
 

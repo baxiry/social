@@ -5,55 +5,40 @@ import (
 	"fmt"
 	"html/template"
 	"io"
-	"log"
 	"os"
 
-	//_ "github.com/go-sql-driver/mysql"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/labstack/echo/v4"
 )
 
 var (
-	AppName   = "meet"
+	AppName   = "social"
 	TableName = "users"
 	db        *sql.DB
 )
 
-func createTable(db *sql.DB) {
-	sts := `
---DROP TABLE IF EXISTS users;
-CREATE TABLE IF NOT EXISTS users(
-    userid INTEGER PRIMARY KEY AUTOINCREMENT,
-    Username  VARCAR(250) DEFAULT "",
-    Password  varcar(250) NOT NULL,
-    Email     VARCAR(250) NOT NULL,
-    Gender    VARCAR(250) NOT NULL,
-    Age       INT(2) DEFAULT 0,
-    Height    INT DEFAULT 0,
-    Weight    INT DEFAULT 0,
-    Lang      VARCAR(250) DEFAULT "",
-    Profess   VARCAR(250) DEFAULT "",
-    Contry    VARCAR(250) DEFAULT "",
-    Descript  TEXT DEFAULT "",
-    Photos    TEXT DEFAULT ""
-);
-`
-	_, err := db.Exec(sts)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-}
-
 // init database
 func ConnectDB() *sql.DB {
-	db, err := sql.Open("sqlite3", "database.sql")
-	if err != nil {
-		log.Println("open database error: ", err)
+	var err error
+
+	db, err = sql.Open(
+		"mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
+	if err != nil { // why no error when db is not runinig ??
+		fmt.Println("run mysql server", err)
+		// TODO report this error.
+
+		// wehen db is stoped no error is return.
+		// we expecte errore no database is runing
+
+		// my be this error is fixed with panic ping pong bellow
 	}
-	createTable(db)
-	fmt.Println("table users created")
+
+	if err = db.Ping(); err != nil {
+		// TODO handle this error: dial tcp 127.0.0.1:3306: connect: connection refused
+		fmt.Println("mybe database is not runing or error is: ", err)
+		os.Exit(1)
+	}
 	return db
 }
 
@@ -126,7 +111,7 @@ func Assets() string {
 		fmt.Println(err)
 	}
 
-	if home != "/Users/fedora/repo/meet" {
+	if home != "/Users/fedora/repo/social" {
 		return "/root/social/assets"
 	}
 	return "assets"

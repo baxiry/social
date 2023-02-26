@@ -8,22 +8,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type User struct {
-	UserId   int    `db:"userid"`
-	Username string `db:"username"`
-	Password string `db:"password"`
-	Email    string `db:"email"`
-	Gender   string `db:"dender"`
-	Age      int    `db:"age"`
-	Height   int    `db:"height"`
-	Weight   int    `db:"weight"`
-	Lang     string `db:"lang"`
-	Profess  string `db:"profess"`
-	Contry   string `db:"contry"`
-	Descript string `db:"descript"`
-	Photos   string `db:"photo"`
-}
-
 // signup sing up new user handler
 func Signup(c echo.Context) error {
 
@@ -70,7 +54,8 @@ func Login(c echo.Context) error {
 
 	if pass == fpass && pass != "" {
 		//userSession[email] = name
-		auth.NewSession(c, username, userid)
+		//auth.NewSession(c, username, userid)
+		auth.NewSession(c, userid)
 		return c.Redirect(http.StatusSeeOther, "/") // 303 code
 		// TODO redirect to latest page
 	}

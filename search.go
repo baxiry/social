@@ -68,7 +68,7 @@ func Search_one(c echo.Context) error {
 	}
 
 	// update session information
-	auth.NewSession(c, name, uid.(int))
+	auth.NewSession(c, uid.(int))
 
 	// redirect to acoun page
 	userid := strconv.Itoa(uid.(int))

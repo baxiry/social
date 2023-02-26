@@ -5,11 +5,41 @@ import (
 	"meet/auth"
 	"meet/helps"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/blockloop/scan"
 	"github.com/labstack/echo/v4"
 )
+
+type User struct {
+	Id        int    `db:"Id"`
+	Username  string `db:"Username"`
+	Password  string `db:"Password"`
+	Email     string `db:"Email"`
+	Gender    string `db:"Gender"`
+	Age       int    `db:"Age"`
+	Height    int    `db:"Height"`
+	Weight    int    `db:"Weight"`
+	Languages string `db:"Languages"`
+	Profess   string `db:"Profess"`
+	Contry    string `db:"Country"`
+	Descript  string `db:"Descript"`
+	Photos    string `db:"Photos"`
+}
+
+// getCatigories get all photo name of catigories.
+func getRecentUsers() (users []User) {
+	rows, err := db.Query("SELECT Id, Username, Email, Photos, Gender from social.users;")
+	defer rows.Close()
+	err = scan.Rows(&users, rows)
+	if err != nil {
+
+		helps.PrintError("error from schan.Rows: ", err)
+		os.Exit(1)
+	}
+	return users
+}
 
 // HomePage get home page
 func HomePage(c echo.Context) error {
@@ -36,17 +66,6 @@ func HomePage(c echo.Context) error {
 	//data["user"] = ProfileInfo(userid)
 	fmt.Println(c.Render(http.StatusOK, "home.html", data))
 	return nil
-}
-
-// getCatigories get all photo name of catigories.
-func getRecentUsers() (users []User) {
-	rows, err := db.Query("SELECT userid, username, email, photos, gender from users;")
-	defer rows.Close()
-
-	err = scan.Rows(&users, rows)
-	helps.PrintError("error from schan.Rows: ", err)
-
-	return users
 }
 
 // get Profile with all info

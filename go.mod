@@ -1,4 +1,4 @@
-module meet
+module social 
 
 go 1.19
 

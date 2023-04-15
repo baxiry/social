@@ -46,7 +46,8 @@ func HomePage(c echo.Context) error {
 
 	username, userid, err := auth.GetSession(c)
 
-	helps.PrintError("get session", err)
+	helps.PrintError("\n\nGet session", err)
+
 	println("userid is ", userid)
 	println("username is ", username)
 
@@ -70,13 +71,15 @@ func HomePage(c echo.Context) error {
 
 // get Profile with all info
 func ProfileInfo(userid int) (profile User) {
-	rows, err := db.Query("select * from users where userid = ?", userid)
+	fmt.Println("ProfileInfo")
+
+	rows, err := db.Query("select * from social.users where id = ?", userid)
 	if err != nil {
 		fmt.Println("\nat query func owner id db select ", err)
 	}
 	defer rows.Close() // ??
 	err = scan.Rows(&profile, rows)
-	println(err)
+	println("ProfileInfo, ", err)
 	return profile
 }
 

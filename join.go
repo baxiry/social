@@ -35,7 +35,7 @@ func Signup(c echo.Context) error {
 // insertUser register new user in db
 func insertUser(email, pass, gender string) error {
 
-	sts := "INSERT INTO users(email, password, gender) VALUES ( ?, ?, ?)"
+	sts := "INSERT INTO social.users(email, password, gender) VALUES ( ?, ?, ?)"
 	_, err := db.Exec(sts, email, pass, gender)
 
 	// if there is an error inserting, handle it
@@ -54,8 +54,8 @@ func Login(c echo.Context) error {
 
 	if pass == fpass && pass != "" {
 		//userSession[email] = name
-		//auth.NewSession(c, username, userid)
-		auth.NewSession(c, userid)
+		auth.NewSession(c, username, userid)
+		//auth.NewSession(c, userid)
 		return c.Redirect(http.StatusSeeOther, "/") // 303 code
 		// TODO redirect to latest page
 	}
@@ -75,7 +75,7 @@ func selectUser(femail string) (int, string, string) {
 	var username, password string
 	var userid int
 	err := db.QueryRow(
-		"SELECT userid, username, password FROM users WHERE email = ?",
+		"SELECT id, username, password FROM social.users WHERE email = ?",
 		femail).Scan(&userid, &username, &password)
 	if err != nil {
 		fmt.Println("selet user ERROR: ", err.Error())

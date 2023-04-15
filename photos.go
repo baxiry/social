@@ -98,7 +98,7 @@ func UpPhotos(c echo.Context) error {
 // update fotos name in database
 func UpdatePhotos(photos string, userid int) error {
 	//Update db
-	stmt, err := db.Prepare("update  users set photos=? where userid=?")
+	stmt, err := db.Prepare("update  users set photos=? where id=?")
 	if err != nil {
 		return err
 	}
@@ -115,7 +115,7 @@ func UpdatePhotos(photos string, userid int) error {
 func getUserFotos(userid int) (photos []string) {
 	var picts string
 	err := db.QueryRow(
-		"SELECT photos FROM users WHERE userid = ?",
+		"SELECT photos FROM users WHERE id = ?",
 		userid).Scan(&picts)
 	if err != nil {
 		return nil

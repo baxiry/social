@@ -14,7 +14,7 @@ import (
 // getUserIfor select * by Id
 func getUserInfo(userid int) (user User) {
 
-	rows, err := db.Query("SELECT * FROM users WHERE userid = ?", userid)
+	rows, err := db.Query("SELECT * FROM social.users WHERE id = ?", userid)
 
 	if err != nil {
 		fmt.Println(err.Error())

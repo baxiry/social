@@ -37,10 +37,6 @@ func main() {
 	e.GET("/activity", ActivityPage)
 	e.GET("/search", SearchPage)
 
-	//e.POST("/updatefotos/:id", updateProdFotos)
-
-	//e.GET("/:catigory/:id", getOneProd) // whech is beter ? :catigory or /product ?
-
 	e.Logger.Fatal(e.Start(":8080"))
 
 }

@@ -19,14 +19,14 @@ func GetSession(c echo.Context) (string, int, error) {
 }
 
 // newSession creates new session
-func NewSession(c echo.Context, userid int) {
+func NewSession(c echo.Context, username string, userid int) {
 	sess, _ := session.Get("session", c)
 	sess.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   60 * 10, // 10 minutes of session,
 		HttpOnly: true,    // no websocket or any protocol else
 	}
-	// sess.Values["username"] = username
+	sess.Values["username"] = username
 	sess.Values["userid"] = userid
 	sess.Save(c.Request(), c.Response())
 }

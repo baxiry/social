@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"meet/auth"
 	"net/http"
+	"social/auth"
 
 	"github.com/labstack/echo/v4"
 )

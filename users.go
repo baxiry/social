@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"meet/auth"
 	"net/http"
+	"social/auth"
 	"strconv"
 	"strings"
 
@@ -84,7 +84,7 @@ func UpdatePage(c echo.Context) error {
 
 // update updates Acount information
 func Update(c echo.Context) error {
-	fmt.Println("update account")
+	fmt.Println("Update func")
 
 	_, userid, err := auth.GetSession(c)
 	if err != nil {
@@ -93,8 +93,9 @@ func Update(c echo.Context) error {
 	}
 
 	stmt, err := db.Prepare(
-		`update users set username=?, age=?, profess=?, descript=?,contry =? where userid = ?`)
+		`update social.users set username=?, age=?, profess=?, descript=?, country =? where id = ?`)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 	defer stmt.Close()

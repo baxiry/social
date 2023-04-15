@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"meet/auth"
 	"net/http"
+	"social/auth"
 	"strconv"
 
 	"github.com/labstack/echo-contrib/session"

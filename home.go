@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"meet/auth"
-	"meet/helps"
 	"net/http"
 	"os"
+	"social/auth"
+	"social/helps"
 	"strings"
 
 	"github.com/blockloop/scan"

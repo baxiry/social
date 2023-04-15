@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"io"
-	"meet/auth"
 	"net/http"
 	"os"
+	"social/auth"
 	"strconv"
 	"strings"
 

@@ -113,6 +113,7 @@ func UpdatePhotos(photos string, userid int) error {
 
 // selecte fotos from db
 func getUserFotos(userid int) (photos []string) {
+	fmt.Println("get user pictur")
 	var picts string
 	err := db.QueryRow(
 		"SELECT photos FROM users WHERE id = ?",

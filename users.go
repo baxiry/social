@@ -70,15 +70,15 @@ func UpdatePage(c echo.Context) error {
 		return nil
 	}
 
-	data := make(map[string]interface{}, 1)
-
+	data := make(map[string]interface{}, 3)
 	data["username"] = username
 	data["userid"] = userid
 	data["user"] = getUserInfo(userid)
 
-	fmt.Println(data)
-
-	fmt.Println(c.Render(200, "upacount.html", data))
+	if err := c.Render(200, "upacount.html", data); err != nil {
+		fmt.Println(err)
+		return err
+	}
 	return nil
 }
 

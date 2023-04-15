@@ -9,7 +9,7 @@
         <input type=text name=username placeholder=username value={{.user.Username}}><br><br>
         age :
         
-        <input type=number name=age placeholder=age value={{if ne .user.Age 0}}{{.user.Age}}{{end}}><br><br>
+        <input type=number name=age placeholder="age" value={{ if ne .user.Age 0}}{{.user.Age}}{{end}}><br><br>
         
         profess:
         <input type="text" name=profess placeholder=profess value={{.user.Profess}}><br><br>
@@ -29,7 +29,7 @@
             <option value=usa      {{if eq $contry "usa"}} selected {{end}}>usa</option> 
         </select> <br><br>
         <input type=submit value=Submit>
-        <a href="http://localhost:8080/user/{{.user.UserId}}"> Cancel </a>
+        <a href="http://localhost:8080/user/{{.user.Id}}"> Cancel </a>
 
     </form>
 </div>

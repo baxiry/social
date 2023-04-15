@@ -75,7 +75,7 @@ func ProfileInfo(userid int) (profile User) {
 
 	rows, err := db.Query("select * from social.users where id = ?", userid)
 	if err != nil {
-		fmt.Println("\nat query func owner id db select ", err)
+		fmt.Println("query error", err)
 	}
 	defer rows.Close() // ??
 	err = scan.Rows(&profile, rows)

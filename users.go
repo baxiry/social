@@ -14,7 +14,7 @@ import (
 // getUserIfor select * by Id
 func getUserInfo(userid int) (user User) {
 
-	rows, err := db.Query("SELECT * FROM social.users WHERE id = ?", userid)
+	rows, err := db.Query("SELECT * FROM users WHERE id = ?", userid)
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -93,7 +93,7 @@ func Update(c echo.Context) error {
 	}
 
 	stmt, err := db.Prepare(
-		`update social.users set username=?, age=?, profess=?, descript=?, country =? where id = ?`)
+		`update users set username=?, age=?, profess=?, descript=?, country =? where id = ?`)
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -110,6 +110,7 @@ func Update(c echo.Context) error {
 
 // update user info in db
 func UpdateUserInfo(field string, userid int) error {
+	fmt.Println("update specific func")
 
 	//Update db
 	stmt, err := db.Prepare("update users set " + field + "=? where userid=?")

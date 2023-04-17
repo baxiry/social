@@ -13,9 +13,9 @@ import (
 )
 
 var (
-	AppName   = "social"
-	TableName = "users"
-	db        *sql.DB
+	ProjectName = "social"
+	TableName   = "users"
+	db          *sql.DB
 )
 
 // init database
@@ -23,7 +23,7 @@ func ConnectDB() *sql.DB {
 	var err error
 
 	db, err = sql.Open(
-		"mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
+		"mysql", "root:123456@tcp(127.0.0.1:3306)/"+ProjectName+"?charset=utf8&parseTime=True&loc=Local")
 	if err != nil { // why no error when db is not runinig ??
 		fmt.Println("run mysql server", err)
 		// TODO report this error.

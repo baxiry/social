@@ -98,8 +98,9 @@ func UpPhotos(c echo.Context) error {
 // update fotos name in database
 func UpdatePhotos(photos string, userid int) error {
 	//Update db
-	stmt, err := db.Prepare("update  users set photos=? where id=?")
+	stmt, err := db.Prepare("update social.users set photos=? where id=?")
 	if err != nil {
+		fmt.Println("UpdatePhotos error : ", err)
 		return err
 	}
 	defer stmt.Close()

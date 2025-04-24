@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"log"
 	"os"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/labstack/echo/v4"
 )
@@ -22,21 +23,14 @@ var (
 func ConnectDB() *sql.DB {
 	var err error
 
-	db, err = sql.Open(
-		"mysql", "root:123456@tcp(127.0.0.1:3306)/"+ProjectName+"?charset=utf8&parseTime=True&loc=Local")
+	db, err = sql.Open( // "root:123456@tcp(127.0.0.1:3306)/"+ProjectName+"?charset=utf8&parseTime=True&loc=Local"
+		"sqlite3", "social.db")
 	if err != nil { // why no error when db is not runinig ??
-		fmt.Println("run mysql server", err)
-		// TODO report this error.
-
-		// wehen db is stoped no error is return.
-		// we expecte errore no database is runing
-
-		// my be this error is fixed with panic ping pong bellow
+		log.Println("Error when open sqlite:", err)
 	}
 
 	if err = db.Ping(); err != nil {
-		// TODO handle this error: dial tcp 127.0.0.1:3306: connect: connection refused
-		fmt.Println("mybe database is not runing or error is: ", err)
+		log.Println("when ping to sqlite: ", err)
 		os.Exit(1)
 	}
 	return db

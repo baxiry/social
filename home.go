@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"social/auth"
-	"social/helps"
 	"strings"
 
 	"github.com/blockloop/scan"
@@ -34,8 +33,7 @@ func getRecentUsers() (users []User) {
 	defer rows.Close()
 	err = scan.Rows(&users, rows)
 	if err != nil {
-
-		helps.PrintError("error from schan.Rows: ", err)
+		fmt.Println("error from schan.Rows: ", err)
 		os.Exit(1)
 	}
 	return users
@@ -46,7 +44,7 @@ func HomePage(c echo.Context) error {
 
 	username, userid, err := auth.GetSession(c)
 
-	helps.PrintError("\n\nGet session", err)
+	fmt.Print("\n\nGet session", err)
 
 	println("userid is ", userid)
 	println("username is ", username)
